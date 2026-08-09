@@ -232,9 +232,9 @@ const seedDB = async (quiet = false) => {
         price: 45.00,
         discountPrice: 0,
         stock: 8,
-        thumbnail: 'https://images.unsplash.com/photo-1528458909336-e7a0adfed0a5?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80',
         images: [
-          'https://images.unsplash.com/photo-1528458909336-e7a0adfed0a5?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80'
         ],
         tags: ['macrame', 'wall decor', 'woven', 'cotton', 'boho'],
         averageRating: 4.9,
@@ -322,9 +322,9 @@ const seedDB = async (quiet = false) => {
         price: 28.00,
         discountPrice: 24.00,
         stock: 15,
-        thumbnail: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1605651202774-7d573fd3f12d?auto=format&fit=crop&w=600&q=80',
         images: [
-          'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1605651202774-7d573fd3f12d?auto=format&fit=crop&w=600&q=80'
         ],
         tags: ['candles', 'soy wax', 'essential oils', 'aromatherapy', 'gift set'],
         averageRating: 4.9,
@@ -340,9 +340,9 @@ const seedDB = async (quiet = false) => {
         price: 24.00,
         discountPrice: 21.00,
         stock: 13,
-        thumbnail: 'https://images.unsplash.com/photo-1608571424352-9261a1e1e6f3?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80',
         images: [
-          'https://images.unsplash.com/photo-1608571424352-9261a1e1e6f3?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80'
         ],
         tags: ['room spray', 'botanicals', 'aromatherapy', 'gift'],
         averageRating: 4.7,
@@ -456,8 +456,8 @@ const seedDB = async (quiet = false) => {
         price: 135.00,
         discountPrice: 120.00,
         stock: 5,
-        thumbnail: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80',
-        images: ['https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80'],
+        thumbnail: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?auto=format&fit=crop&w=600&q=80',
+        images: ['https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?auto=format&fit=crop&w=600&q=80'],
         tags: ['lamp', 'lighting', 'home decor', 'ceramic'],
         averageRating: 4.9,
         totalReviews: 4
@@ -477,6 +477,38 @@ const seedDB = async (quiet = false) => {
         tags: ['beeswax', 'candle', 'vanilla', 'cinnamon'],
         averageRating: 4.9,
         totalReviews: 12
+      },
+      {
+        seller: seller._id,
+        store: store._id,
+        name: 'Abstract Colorblock Artwork Poster Print',
+        sku: 'PNT-ABS-023',
+        description: 'Vibrant modern abstract colorblock art print printed on 300gsm museum-quality matte cotton paper.',
+        category: 'Paintings & Artwork',
+        price: 75.00,
+        discountPrice: 65.00,
+        stock: 10,
+        thumbnail: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80',
+        images: ['https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80'],
+        tags: ['artwork', 'abstract', 'colorblock', 'poster', 'painting'],
+        averageRating: 4.9,
+        totalReviews: 31
+      },
+      {
+        seller: seller._id,
+        store: store._id,
+        name: 'Vintage Botanical Sketch Drawing Poster',
+        sku: 'PNT-BOT-024',
+        description: 'Detailed vintage botanical sketch illustration print with antique parchment finish.',
+        category: 'Paintings & Artwork',
+        price: 60.00,
+        discountPrice: 50.00,
+        stock: 15,
+        thumbnail: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80',
+        images: ['https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80'],
+        tags: ['botanical', 'sketch', 'vintage', 'drawing', 'poster'],
+        averageRating: 4.8,
+        totalReviews: 28
       }
     ];
 

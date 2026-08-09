@@ -761,7 +761,7 @@ export const MOCK_CATALOG = [
     "price": 28,
     "averageRating": 4.7,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1608571424352-9261a1e1e6f3?auto=format&fit=crop&w=600&q=80&u=eucalyptus_candle_cs07",
+    "thumbnail": "https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80&u=eucalyptus_candle_cs07",
     "store": {
       "storeName": "Botanical Botanica"
     }
@@ -833,7 +833,7 @@ export const MOCK_CATALOG = [
     "price": 75,
     "averageRating": 4.9,
     "totalReviews": 31,
-    "thumbnail": "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80&u=abstract_colorblock_print_pa05",
+    "thumbnail": "https://images.unsplash.com/photo-1549887534-1541e9326642?auto=format&fit=crop&w=600&q=80&u=abstract_colorblock_print_pa05",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -869,7 +869,7 @@ export const MOCK_CATALOG = [
     "price": 60,
     "averageRating": 4.8,
     "totalReviews": 28,
-    "thumbnail": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80&u=vint_botanical_sketch_pa08",
+    "thumbnail": "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80&u=vint_botanical_sketch_pa08",
     "store": {
       "storeName": "Atelier Maison"
     }

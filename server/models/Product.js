@@ -17,7 +17,12 @@ const productSchema = new mongoose.Schema({
   category: { 
     type: String, 
     required: true, 
-    enum: ['Pottery & Ceramics', 'Jewelry & Accessories', 'Woodworking & Furniture', 'Textiles & Fiber Art', 'Paper & Stationery', 'Home Decor', 'Candles & Scents'],
+    enum: [
+      'Pottery & Ceramics', 'Jewelry & Accessories', 'Woodworking & Furniture', 
+      'Textiles & Fiber Art', 'Paper & Stationery', 'Home Decor', 'Candles & Scents',
+      'Paintings & Artwork', 'Handmade Toys & Kids', 'Leather Goods', 
+      'Handmade Clothing', 'Kitchen & Dining', 'Garden & Outdoor', 'Festival & Gift Items'
+    ],
     index: true 
   },
   price: { type: Number, required: true, min: 0 },
