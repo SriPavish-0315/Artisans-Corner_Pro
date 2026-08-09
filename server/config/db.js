@@ -11,6 +11,14 @@ const connectDB = async () => {
         );
 
         console.log(`MongoDB Connected: ${conn.connection.host}`);
+        
+        // Auto-seed database if empty (useful for cloud deployments like Railway)
+        try {
+            const seedDB = require('../seeder');
+            await seedDB(true);
+        } catch (seedErr) {
+            console.log('Seeder check notice:', seedErr.message);
+        }
     } catch (error) {
         console.error(`Error: ${error.message}`);
         process.exit(1);

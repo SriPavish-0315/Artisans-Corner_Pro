@@ -113,7 +113,7 @@ export const MOCK_CATALOG = [
     "price": 28,
     "averageRating": 4.9,
     "totalReviews": 24,
-    "thumbnail": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80&u=pc01",
+    "thumbnail": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Terra Cotta Studios"
     }
@@ -125,7 +125,7 @@ export const MOCK_CATALOG = [
     "price": 65,
     "averageRating": 4.8,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80&u=pc02",
+    "thumbnail": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Terra Cotta Studios"
     }
@@ -137,7 +137,7 @@ export const MOCK_CATALOG = [
     "price": 34,
     "averageRating": 4.7,
     "totalReviews": 15,
-    "thumbnail": "https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80&u=pc03",
+    "thumbnail": "https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Heritage Pottery"
     }
@@ -149,7 +149,7 @@ export const MOCK_CATALOG = [
     "price": 49,
     "averageRating": 4.9,
     "totalReviews": 31,
-    "thumbnail": "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80&u=pc04",
+    "thumbnail": "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Clay & Flame"
     }
@@ -161,7 +161,7 @@ export const MOCK_CATALOG = [
     "price": 58,
     "averageRating": 4.9,
     "totalReviews": 18,
-    "thumbnail": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80&u=pc05",
+    "thumbnail": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Clay & Flame"
     }
@@ -173,7 +173,7 @@ export const MOCK_CATALOG = [
     "price": 24,
     "averageRating": 4.8,
     "totalReviews": 14,
-    "thumbnail": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80&u=pc06",
+    "thumbnail": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Terra Cotta Studios"
     }
@@ -185,7 +185,7 @@ export const MOCK_CATALOG = [
     "price": 45,
     "averageRating": 4.7,
     "totalReviews": 22,
-    "thumbnail": "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=80&u=pc07",
+    "thumbnail": "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Heritage Pottery"
     }
@@ -197,7 +197,7 @@ export const MOCK_CATALOG = [
     "price": 18,
     "averageRating": 4.6,
     "totalReviews": 29,
-    "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80&u=pc08",
+    "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Terra Cotta Studios"
     }
@@ -209,7 +209,7 @@ export const MOCK_CATALOG = [
     "price": 85,
     "averageRating": 4.8,
     "totalReviews": 31,
-    "thumbnail": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80&u=ja01",
+    "thumbnail": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Lumina Gems"
     }
@@ -221,7 +221,7 @@ export const MOCK_CATALOG = [
     "price": 54,
     "averageRating": 4.9,
     "totalReviews": 28,
-    "thumbnail": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80&u=ja02",
+    "thumbnail": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Lumina Gems"
     }
@@ -233,7 +233,7 @@ export const MOCK_CATALOG = [
     "price": 36,
     "averageRating": 4.7,
     "totalReviews": 15,
-    "thumbnail": "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=600&q=80&u=ja03",
+    "thumbnail": "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Artisan Leatherworks"
     }
@@ -245,7 +245,7 @@ export const MOCK_CATALOG = [
     "price": 42,
     "averageRating": 5,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80&u=ja04",
+    "thumbnail": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Bloom & Gold"
     }
@@ -257,7 +257,7 @@ export const MOCK_CATALOG = [
     "price": 110,
     "averageRating": 4.9,
     "totalReviews": 45,
-    "thumbnail": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80&u=ja05",
+    "thumbnail": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Lumina Gems"
     }
@@ -269,7 +269,7 @@ export const MOCK_CATALOG = [
     "price": 22,
     "averageRating": 4.8,
     "totalReviews": 34,
-    "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80&u=ja06",
+    "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Bloom & Gold"
     }
@@ -281,7 +281,7 @@ export const MOCK_CATALOG = [
     "price": 25,
     "averageRating": 4.9,
     "totalReviews": 27,
-    "thumbnail": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=600&q=80&u=ja07",
+    "thumbnail": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Bloom & Gold"
     }
@@ -293,7 +293,7 @@ export const MOCK_CATALOG = [
     "price": 68,
     "averageRating": 4.9,
     "totalReviews": 38,
-    "thumbnail": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80&u=ja08",
+    "thumbnail": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Lumina Gems"
     }
@@ -305,7 +305,7 @@ export const MOCK_CATALOG = [
     "price": 120,
     "averageRating": 5,
     "totalReviews": 18,
-    "thumbnail": "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80&u=wf01",
+    "thumbnail": "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Wood & Wave Artisans"
     }
@@ -317,7 +317,7 @@ export const MOCK_CATALOG = [
     "price": 135,
     "averageRating": 4.9,
     "totalReviews": 14,
-    "thumbnail": "/assets/oak_chair.png",
+    "thumbnail": "https://images.unsplash.com/photo-1580481072645-022f9a6d1270?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
@@ -329,7 +329,7 @@ export const MOCK_CATALOG = [
     "price": 295,
     "averageRating": 4.9,
     "totalReviews": 7,
-    "thumbnail": "https://images.unsplash.com/photo-1519947486511-46149fa0a254?auto=format&fit=crop&w=600&q=80&u=wf03",
+    "thumbnail": "https://images.unsplash.com/photo-1519947486511-46149fa0a254?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
@@ -341,7 +341,7 @@ export const MOCK_CATALOG = [
     "price": 48,
     "averageRating": 4.8,
     "totalReviews": 22,
-    "thumbnail": "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=600&q=80&u=wf04",
+    "thumbnail": "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
@@ -353,7 +353,7 @@ export const MOCK_CATALOG = [
     "price": 125,
     "averageRating": 4.9,
     "totalReviews": 31,
-    "thumbnail": "https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?auto=format&fit=crop&w=600&q=80&u=wf05",
+    "thumbnail": "https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
@@ -365,7 +365,7 @@ export const MOCK_CATALOG = [
     "price": 55,
     "averageRating": 4.8,
     "totalReviews": 26,
-    "thumbnail": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=600&q=80&u=wf06",
+    "thumbnail": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Wood & Wave Artisans"
     }
@@ -377,7 +377,7 @@ export const MOCK_CATALOG = [
     "price": 165,
     "averageRating": 4.9,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1532323544230-7191fd51bc1b?auto=format&fit=crop&w=600&q=80&u=wf07",
+    "thumbnail": "https://images.unsplash.com/photo-1532323544230-7191fd51bc1b?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
@@ -389,7 +389,7 @@ export const MOCK_CATALOG = [
     "price": 52,
     "averageRating": 4.7,
     "totalReviews": 17,
-    "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80&u=wf08",
+    "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Wood & Wave Artisans"
     }
@@ -401,7 +401,7 @@ export const MOCK_CATALOG = [
     "price": 95,
     "averageRating": 4.7,
     "totalReviews": 12,
-    "thumbnail": "https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=600&q=80&u=tf01",
+    "thumbnail": "https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Weaver & Loom"
     }
@@ -413,7 +413,7 @@ export const MOCK_CATALOG = [
     "price": 48,
     "averageRating": 4.9,
     "totalReviews": 27,
-    "thumbnail": "https://images.unsplash.com/photo-1528458909336-e7a0adfed0a5?auto=format&fit=crop&w=600&q=80&u=tf02",
+    "thumbnail": "https://images.unsplash.com/photo-1528458909336-e7a0adfed0a5?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Knot & Thread"
     }
@@ -425,7 +425,7 @@ export const MOCK_CATALOG = [
     "price": 29,
     "averageRating": 4.6,
     "totalReviews": 14,
-    "thumbnail": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80&u=tf03",
+    "thumbnail": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Indigo Arts"
     }
@@ -437,7 +437,7 @@ export const MOCK_CATALOG = [
     "price": 58,
     "averageRating": 5,
     "totalReviews": 8,
-    "thumbnail": "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80&u=tf04",
+    "thumbnail": "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Weaver & Loom"
     }
@@ -449,7 +449,7 @@ export const MOCK_CATALOG = [
     "price": 68,
     "averageRating": 4.8,
     "totalReviews": 29,
-    "thumbnail": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80&u=tf05",
+    "thumbnail": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Weaver & Loom"
     }
@@ -461,7 +461,7 @@ export const MOCK_CATALOG = [
     "price": 34,
     "averageRating": 4.7,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=600&q=80&u=tf06",
+    "thumbnail": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Knot & Thread"
     }
@@ -473,7 +473,7 @@ export const MOCK_CATALOG = [
     "price": 110,
     "averageRating": 4.9,
     "totalReviews": 32,
-    "thumbnail": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80&u=tf07",
+    "thumbnail": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Weaver & Loom"
     }
@@ -485,7 +485,7 @@ export const MOCK_CATALOG = [
     "price": 26,
     "averageRating": 4.8,
     "totalReviews": 21,
-    "thumbnail": "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80&u=tf08",
+    "thumbnail": "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Knot & Thread"
     }
@@ -497,7 +497,7 @@ export const MOCK_CATALOG = [
     "price": 48,
     "averageRating": 4.9,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80&u=ps01",
+    "thumbnail": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Smyth & Hide"
     }
@@ -509,7 +509,7 @@ export const MOCK_CATALOG = [
     "price": 18,
     "averageRating": 4.8,
     "totalReviews": 21,
-    "thumbnail": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80&u=ps02",
+    "thumbnail": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Paper & Ink Co."
     }
@@ -521,7 +521,7 @@ export const MOCK_CATALOG = [
     "price": 32,
     "averageRating": 4.9,
     "totalReviews": 11,
-    "thumbnail": "https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=600&q=80&u=ps03",
+    "thumbnail": "https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Smyth & Hide"
     }
@@ -533,7 +533,7 @@ export const MOCK_CATALOG = [
     "price": 26,
     "averageRating": 4.8,
     "totalReviews": 15,
-    "thumbnail": "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80&u=ps04",
+    "thumbnail": "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Paper & Ink Co."
     }
@@ -545,7 +545,7 @@ export const MOCK_CATALOG = [
     "price": 42,
     "averageRating": 4.9,
     "totalReviews": 38,
-    "thumbnail": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=600&q=80&u=brass_fountain_pen_ps05",
+    "thumbnail": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Smyth & Hide"
     }
@@ -557,7 +557,7 @@ export const MOCK_CATALOG = [
     "price": 28,
     "averageRating": 4.8,
     "totalReviews": 24,
-    "thumbnail": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=600&q=80&u=ps06",
+    "thumbnail": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Paper & Ink Co."
     }
@@ -569,7 +569,7 @@ export const MOCK_CATALOG = [
     "price": 54,
     "averageRating": 5,
     "totalReviews": 16,
-    "thumbnail": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80&u=ps07",
+    "thumbnail": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Smyth & Hide"
     }
@@ -581,7 +581,7 @@ export const MOCK_CATALOG = [
     "price": 14,
     "averageRating": 4.7,
     "totalReviews": 29,
-    "thumbnail": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80&u=ps08",
+    "thumbnail": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Paper & Ink Co."
     }
@@ -593,7 +593,7 @@ export const MOCK_CATALOG = [
     "price": 140,
     "averageRating": 4.9,
     "totalReviews": 16,
-    "thumbnail": "/assets/canvas_art.png",
+    "thumbnail": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -605,7 +605,7 @@ export const MOCK_CATALOG = [
     "price": 65,
     "averageRating": 4.9,
     "totalReviews": 28,
-    "thumbnail": "/assets/rattan_mirror.png",
+    "thumbnail": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -617,7 +617,7 @@ export const MOCK_CATALOG = [
     "price": 48,
     "averageRating": 4.9,
     "totalReviews": 22,
-    "thumbnail": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80&u=hd03",
+    "thumbnail": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -629,7 +629,7 @@ export const MOCK_CATALOG = [
     "price": 58,
     "averageRating": 4.8,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=600&q=80&u=hd04",
+    "thumbnail": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
@@ -641,7 +641,7 @@ export const MOCK_CATALOG = [
     "price": 85,
     "averageRating": 4.9,
     "totalReviews": 32,
-    "thumbnail": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80&u=hd05",
+    "thumbnail": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -653,7 +653,7 @@ export const MOCK_CATALOG = [
     "price": 42,
     "averageRating": 4.8,
     "totalReviews": 27,
-    "thumbnail": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80&u=hd06",
+    "thumbnail": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -665,7 +665,7 @@ export const MOCK_CATALOG = [
     "price": 78,
     "averageRating": 4.9,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&w=600&q=80&u=hd07",
+    "thumbnail": "https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
@@ -677,7 +677,7 @@ export const MOCK_CATALOG = [
     "price": 38,
     "averageRating": 4.7,
     "totalReviews": 21,
-    "thumbnail": "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80&u=hd08",
+    "thumbnail": "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -689,7 +689,7 @@ export const MOCK_CATALOG = [
     "price": 32,
     "averageRating": 4.9,
     "totalReviews": 33,
-    "thumbnail": "/assets/lavender_candle.png",
+    "thumbnail": "https://images.unsplash.com/photo-1605651202774-7d573fd3f12d?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Botanical Botanica"
     }
@@ -701,7 +701,7 @@ export const MOCK_CATALOG = [
     "price": 22,
     "averageRating": 4.8,
     "totalReviews": 17,
-    "thumbnail": "/assets/room_spray.png",
+    "thumbnail": "https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Botanical Botanica"
     }
@@ -713,7 +713,7 @@ export const MOCK_CATALOG = [
     "price": 26,
     "averageRating": 4.9,
     "totalReviews": 45,
-    "thumbnail": "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80&u=cs03",
+    "thumbnail": "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Botanical Botanica"
     }
@@ -725,7 +725,7 @@ export const MOCK_CATALOG = [
     "price": 34,
     "averageRating": 4.9,
     "totalReviews": 23,
-    "thumbnail": "/assets/diffuser_set.png",
+    "thumbnail": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Botanical Botanica"
     }
@@ -737,7 +737,7 @@ export const MOCK_CATALOG = [
     "price": 18,
     "averageRating": 4.8,
     "totalReviews": 29,
-    "thumbnail": "https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=600&q=80&u=cs05",
+    "thumbnail": "https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Botanical Botanica"
     }
@@ -749,7 +749,7 @@ export const MOCK_CATALOG = [
     "price": 24,
     "averageRating": 4.9,
     "totalReviews": 31,
-    "thumbnail": "https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=600&q=80&u=incense_cs06",
+    "thumbnail": "https://images.unsplash.com/photo-1508615070457-7baeba4003ab?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Botanical Botanica"
     }
@@ -761,7 +761,7 @@ export const MOCK_CATALOG = [
     "price": 28,
     "averageRating": 4.7,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80&u=eucalyptus_candle_cs07",
+    "thumbnail": "https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Botanical Botanica"
     }
@@ -773,7 +773,7 @@ export const MOCK_CATALOG = [
     "price": 20,
     "averageRating": 4.8,
     "totalReviews": 22,
-    "thumbnail": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=80&u=cs08",
+    "thumbnail": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Botanical Botanica"
     }
@@ -785,7 +785,7 @@ export const MOCK_CATALOG = [
     "price": 150,
     "averageRating": 5,
     "totalReviews": 18,
-    "thumbnail": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80&u=pa01",
+    "thumbnail": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -797,7 +797,7 @@ export const MOCK_CATALOG = [
     "price": 95,
     "averageRating": 4.8,
     "totalReviews": 22,
-    "thumbnail": "https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&w=600&q=80&u=pa02",
+    "thumbnail": "https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -809,7 +809,7 @@ export const MOCK_CATALOG = [
     "price": 180,
     "averageRating": 5,
     "totalReviews": 14,
-    "thumbnail": "https://images.unsplash.com/photo-1579541814924-49fef17c5be5?auto=format&fit=crop&w=600&q=80&u=scenic_landscape_oil_pa03",
+    "thumbnail": "https://images.unsplash.com/photo-1579541814924-49fef17c5be5?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -821,7 +821,7 @@ export const MOCK_CATALOG = [
     "price": 55,
     "averageRating": 4.7,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80&u=pa04",
+    "thumbnail": "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -833,7 +833,7 @@ export const MOCK_CATALOG = [
     "price": 75,
     "averageRating": 4.9,
     "totalReviews": 31,
-    "thumbnail": "https://images.unsplash.com/photo-1549887534-1541e9326642?auto=format&fit=crop&w=600&q=80&u=abstract_colorblock_print_pa05",
+    "thumbnail": "https://images.unsplash.com/photo-1549887534-1541e9326642?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -845,7 +845,7 @@ export const MOCK_CATALOG = [
     "price": 65,
     "averageRating": 4.8,
     "totalReviews": 25,
-    "thumbnail": "https://images.unsplash.com/photo-1579783901586-d8827248356f?auto=format&fit=crop&w=600&q=80&u=line_art_figure_pa06",
+    "thumbnail": "https://images.unsplash.com/photo-1579783901586-d8827248356f?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -857,7 +857,7 @@ export const MOCK_CATALOG = [
     "price": 165,
     "averageRating": 4.9,
     "totalReviews": 17,
-    "thumbnail": "https://images.unsplash.com/photo-1579541814924-49fef17c5be5?auto=format&fit=crop&w=600&q=80&u=golden_sunset_canvas_pa07",
+    "thumbnail": "https://images.unsplash.com/photo-1579541814924-49fef17c5be5?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -869,7 +869,7 @@ export const MOCK_CATALOG = [
     "price": 60,
     "averageRating": 4.8,
     "totalReviews": 28,
-    "thumbnail": "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80&u=vint_botanical_sketch_pa08",
+    "thumbnail": "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -881,7 +881,7 @@ export const MOCK_CATALOG = [
     "price": 22,
     "averageRating": 4.9,
     "totalReviews": 27,
-    "thumbnail": "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80&u=tk01",
+    "thumbnail": "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
@@ -893,7 +893,7 @@ export const MOCK_CATALOG = [
     "price": 34,
     "averageRating": 5,
     "totalReviews": 42,
-    "thumbnail": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=600&q=80&u=tk02",
+    "thumbnail": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Knot & Thread"
     }
@@ -905,7 +905,7 @@ export const MOCK_CATALOG = [
     "price": 42,
     "averageRating": 4.9,
     "totalReviews": 20,
-    "thumbnail": "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=600&q=80&u=tk03",
+    "thumbnail": "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
@@ -929,7 +929,7 @@ export const MOCK_CATALOG = [
     "price": 48,
     "averageRating": 4.9,
     "totalReviews": 33,
-    "thumbnail": "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=600&q=80&u=tk05",
+    "thumbnail": "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
@@ -941,7 +941,7 @@ export const MOCK_CATALOG = [
     "price": 32,
     "averageRating": 5,
     "totalReviews": 29,
-    "thumbnail": "https://images.unsplash.com/photo-1558060370-d644479be6f7?auto=format&fit=crop&w=600&q=80&u=organic_bunny_toy_tk06",
+    "thumbnail": "https://images.unsplash.com/photo-1558060370-d644479be6f7?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Knot & Thread"
     }
@@ -953,7 +953,7 @@ export const MOCK_CATALOG = [
     "price": 55,
     "averageRating": 4.8,
     "totalReviews": 18,
-    "thumbnail": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80&u=tk07",
+    "thumbnail": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
@@ -965,7 +965,7 @@ export const MOCK_CATALOG = [
     "price": 18,
     "averageRating": 4.9,
     "totalReviews": 35,
-    "thumbnail": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=600&q=80&u=tk08",
+    "thumbnail": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Knot & Thread"
     }
@@ -977,7 +977,7 @@ export const MOCK_CATALOG = [
     "price": 64,
     "averageRating": 5,
     "totalReviews": 38,
-    "thumbnail": "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80&u=lg01",
+    "thumbnail": "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Artisan Leatherworks"
     }
@@ -989,7 +989,7 @@ export const MOCK_CATALOG = [
     "price": 48,
     "averageRating": 4.8,
     "totalReviews": 26,
-    "thumbnail": "https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=600&q=80&u=lg02",
+    "thumbnail": "https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Artisan Leatherworks"
     }
@@ -1001,7 +1001,7 @@ export const MOCK_CATALOG = [
     "price": 145,
     "averageRating": 4.9,
     "totalReviews": 21,
-    "thumbnail": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80&u=lg03",
+    "thumbnail": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Artisan Leatherworks"
     }
@@ -1013,7 +1013,7 @@ export const MOCK_CATALOG = [
     "price": 32,
     "averageRating": 4.8,
     "totalReviews": 35,
-    "thumbnail": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80&u=lg04",
+    "thumbnail": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Artisan Leatherworks"
     }
@@ -1025,7 +1025,7 @@ export const MOCK_CATALOG = [
     "price": 128,
     "averageRating": 4.9,
     "totalReviews": 42,
-    "thumbnail": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80&u=lg05",
+    "thumbnail": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Artisan Leatherworks"
     }
@@ -1037,7 +1037,7 @@ export const MOCK_CATALOG = [
     "price": 185,
     "averageRating": 5,
     "totalReviews": 28,
-    "thumbnail": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80&u=lg06",
+    "thumbnail": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Artisan Leatherworks"
     }
@@ -1049,7 +1049,7 @@ export const MOCK_CATALOG = [
     "price": 24,
     "averageRating": 4.7,
     "totalReviews": 31,
-    "thumbnail": "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=600&q=80&u=lg07",
+    "thumbnail": "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Artisan Leatherworks"
     }
@@ -1061,7 +1061,7 @@ export const MOCK_CATALOG = [
     "price": 98,
     "averageRating": 4.8,
     "totalReviews": 36,
-    "thumbnail": "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80&u=lg08",
+    "thumbnail": "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Artisan Leatherworks"
     }
@@ -1085,7 +1085,7 @@ export const MOCK_CATALOG = [
     "price": 85,
     "averageRating": 4.9,
     "totalReviews": 21,
-    "thumbnail": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80&u=hc02",
+    "thumbnail": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Weaver & Loom"
     }
@@ -1097,7 +1097,7 @@ export const MOCK_CATALOG = [
     "price": 120,
     "averageRating": 4.9,
     "totalReviews": 16,
-    "thumbnail": "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=600&q=80&u=hc03",
+    "thumbnail": "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Weaver & Loom"
     }
@@ -1109,7 +1109,7 @@ export const MOCK_CATALOG = [
     "price": 65,
     "averageRating": 5,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80&u=hc04",
+    "thumbnail": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Weaver & Loom"
     }
@@ -1121,7 +1121,7 @@ export const MOCK_CATALOG = [
     "price": 58,
     "averageRating": 4.8,
     "totalReviews": 34,
-    "thumbnail": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80&u=hc05",
+    "thumbnail": "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Indigo Arts"
     }
@@ -1133,7 +1133,7 @@ export const MOCK_CATALOG = [
     "price": 52,
     "averageRating": 4.9,
     "totalReviews": 40,
-    "thumbnail": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80&u=hc06",
+    "thumbnail": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Indigo Arts"
     }
@@ -1145,7 +1145,7 @@ export const MOCK_CATALOG = [
     "price": 64,
     "averageRating": 4.8,
     "totalReviews": 25,
-    "thumbnail": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80&u=hc07",
+    "thumbnail": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Weaver & Loom"
     }
@@ -1157,7 +1157,7 @@ export const MOCK_CATALOG = [
     "price": 46,
     "averageRating": 4.9,
     "totalReviews": 22,
-    "thumbnail": "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80&u=hc08",
+    "thumbnail": "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Weaver & Loom"
     }
@@ -1181,7 +1181,7 @@ export const MOCK_CATALOG = [
     "price": 45,
     "averageRating": 5,
     "totalReviews": 42,
-    "thumbnail": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80&u=kd02",
+    "thumbnail": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Wood & Wave Artisans"
     }
@@ -1193,7 +1193,7 @@ export const MOCK_CATALOG = [
     "price": 29,
     "averageRating": 4.9,
     "totalReviews": 31,
-    "thumbnail": "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=80&u=kd03",
+    "thumbnail": "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Clay & Flame"
     }
@@ -1205,7 +1205,7 @@ export const MOCK_CATALOG = [
     "price": 65,
     "averageRating": 4.8,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80&u=kd04",
+    "thumbnail": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Terra Cotta Studios"
     }
@@ -1217,7 +1217,7 @@ export const MOCK_CATALOG = [
     "price": 54,
     "averageRating": 4.9,
     "totalReviews": 38,
-    "thumbnail": "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80&u=kd05",
+    "thumbnail": "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Wood & Wave Artisans"
     }
@@ -1229,7 +1229,7 @@ export const MOCK_CATALOG = [
     "price": 36,
     "averageRating": 4.8,
     "totalReviews": 24,
-    "thumbnail": "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80&u=kd06",
+    "thumbnail": "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Clay & Flame"
     }
@@ -1241,7 +1241,7 @@ export const MOCK_CATALOG = [
     "price": 20,
     "averageRating": 4.7,
     "totalReviews": 29,
-    "thumbnail": "https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80&u=kd07",
+    "thumbnail": "https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Wood & Wave Artisans"
     }
@@ -1253,7 +1253,7 @@ export const MOCK_CATALOG = [
     "price": 42,
     "averageRating": 4.9,
     "totalReviews": 18,
-    "thumbnail": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80&u=kd08",
+    "thumbnail": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Terra Cotta Studios"
     }
@@ -1265,7 +1265,7 @@ export const MOCK_CATALOG = [
     "price": 42,
     "averageRating": 4.9,
     "totalReviews": 24,
-    "thumbnail": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=600&q=80&u=go01",
+    "thumbnail": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Terra Cotta Studios"
     }
@@ -1289,7 +1289,7 @@ export const MOCK_CATALOG = [
     "price": 35,
     "averageRating": 4.8,
     "totalReviews": 29,
-    "thumbnail": "https://images.unsplash.com/photo-1533158307587-828f0a76ef46?auto=format&fit=crop&w=600&q=80&u=go03",
+    "thumbnail": "https://images.unsplash.com/photo-1533158307587-828f0a76ef46?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Clay & Flame"
     }
@@ -1301,7 +1301,7 @@ export const MOCK_CATALOG = [
     "price": 48,
     "averageRating": 4.9,
     "totalReviews": 22,
-    "thumbnail": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80&u=go04",
+    "thumbnail": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -1313,7 +1313,7 @@ export const MOCK_CATALOG = [
     "price": 28,
     "averageRating": 4.8,
     "totalReviews": 31,
-    "thumbnail": "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80&u=go05",
+    "thumbnail": "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Knot & Thread"
     }
@@ -1325,7 +1325,7 @@ export const MOCK_CATALOG = [
     "price": 22,
     "averageRating": 4.9,
     "totalReviews": 40,
-    "thumbnail": "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&w=600&q=80&u=go06",
+    "thumbnail": "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Terra Cotta Studios"
     }
@@ -1337,7 +1337,7 @@ export const MOCK_CATALOG = [
     "price": 110,
     "averageRating": 4.9,
     "totalReviews": 15,
-    "thumbnail": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80&u=go07",
+    "thumbnail": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Atelier Maison"
     }
@@ -1349,7 +1349,7 @@ export const MOCK_CATALOG = [
     "price": 38,
     "averageRating": 4.7,
     "totalReviews": 26,
-    "thumbnail": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=600&q=80&u=go08",
+    "thumbnail": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Terra Cotta Studios"
     }
@@ -1361,7 +1361,7 @@ export const MOCK_CATALOG = [
     "price": 25,
     "averageRating": 4.9,
     "totalReviews": 42,
-    "thumbnail": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=600&q=80&u=fg01",
+    "thumbnail": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Paper & Ink Co."
     }
@@ -1397,7 +1397,7 @@ export const MOCK_CATALOG = [
     "price": 22,
     "averageRating": 4.9,
     "totalReviews": 34,
-    "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80&u=fg04",
+    "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Paper & Ink Co."
     }
@@ -1409,7 +1409,7 @@ export const MOCK_CATALOG = [
     "price": 45,
     "averageRating": 4.9,
     "totalReviews": 29,
-    "thumbnail": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80&u=fg05",
+    "thumbnail": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Paper & Ink Co."
     }
@@ -1421,7 +1421,7 @@ export const MOCK_CATALOG = [
     "price": 20,
     "averageRating": 5,
     "totalReviews": 37,
-    "thumbnail": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80&u=fg06",
+    "thumbnail": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Bloom & Gold"
     }
@@ -1433,7 +1433,7 @@ export const MOCK_CATALOG = [
     "price": 34,
     "averageRating": 4.9,
     "totalReviews": 22,
-    "thumbnail": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80&u=fg07",
+    "thumbnail": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Clay & Flame"
     }
@@ -1445,7 +1445,7 @@ export const MOCK_CATALOG = [
     "price": 48,
     "averageRating": 4.8,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80&u=fg08",
+    "thumbnail": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Forest Craft Co."
     }
