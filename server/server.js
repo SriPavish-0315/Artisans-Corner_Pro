@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
@@ -46,10 +47,18 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Serve React Frontend
+const clientPath = path.join(__dirname, '../client/dist');
+
+app.use(express.static(clientPath));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientPath, 'index.html'));
+});
+
 // Error Handling Middleware
 app.use(notFound);
 app.use(errorHandler);
-
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
