@@ -24,7 +24,22 @@ connectDB();
 const app = express();
 
 // Security & Utility Middleware
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "blob:",
+          "https://images.unsplash.com",
+          "https://res.cloudinary.com",
+        ],
+      },
+    },
+  })
+);
 app.use(cors());
 app.use(express.json());
 
