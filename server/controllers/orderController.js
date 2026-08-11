@@ -102,6 +102,7 @@ const createOrder = async (req, res) => {
 // @access  Private (Buyer)
 const createStripePaymentIntent = async (req, res) => {
   try {
+    const stripe = getStripe();
     const { amount, currency = 'usd', orderId, items } = req.body;
 
     let finalTotal = 0;
@@ -141,61 +142,33 @@ const createStripePaymentIntent = async (req, res) => {
     const platformFee = finalTotal * 0.05;
     const sellerEarnings = finalTotal * 0.95;
 
-    let paymentIntent = null;
-    let rawSecret = process.env.STRIPE_SECRET_KEY;
-
-    if (rawSecret) {
-      let secretKey = rawSecret.trim();
-      if (!secretKey.startsWith('sk_test_') && !secretKey.startsWith('sk_live_')) {
-        secretKey = `sk_test_${secretKey}`;
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: parsedAmountInCents,
+      currency: currency.toLowerCase(),
+      automatic_payment_methods: { enabled: true },
+      metadata: {
+        orderId: orderId || 'N/A',
+        platformFee: platformFee.toFixed(2),
+        sellerEarnings: sellerEarnings.toFixed(2),
+        userEmail: req.user ? req.user.email : 'guest@example.com'
       }
-      try {
-        const Stripe = require('stripe');
-        const stripe = Stripe(secretKey);
-        paymentIntent = await stripe.paymentIntents.create({
-          amount: parsedAmountInCents,
-          currency: currency.toLowerCase(),
-          automatic_payment_methods: { enabled: true },
-          metadata: {
-            orderId: orderId || 'N/A',
-            platformFee: platformFee.toFixed(2),
-            sellerEarnings: sellerEarnings.toFixed(2),
-            userEmail: req.user ? req.user.email : 'guest@example.com'
-          }
-        });
-      } catch (stripeErr) {
-        console.log('Stripe API call exception:', stripeErr.message);
-      }
-    }
+    });
 
-    if (paymentIntent && paymentIntent.client_secret) {
-      return res.status(200).json({
-        success: true,
-        clientSecret: paymentIntent.client_secret,
-        paymentIntentId: paymentIntent.id,
-        amount: finalTotal,
-        platformFee,
-        sellerEarnings
-      });
-    }
-
-    // Fallback PaymentIntent for demo / test execution
-    const mockIntentId = `pi_demo_${Date.now()}`;
     return res.status(200).json({
       success: true,
-      clientSecret: `${mockIntentId}_secret_${Date.now()}`,
-      paymentIntentId: mockIntentId,
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
       amount: finalTotal,
       platformFee,
-      sellerEarnings,
-      isDemoMode: true
+      sellerEarnings
     });
 
   } catch (error) {
-    res.status(500).json({
+    console.error('Stripe PaymentIntent Creation Error:', error);
+    return res.status(500).json({
       success: false,
-      message: error.message,
-      data: null
+      message: 'Failed to create Stripe PaymentIntent. Verify STRIPE_SECRET_KEY in server/.env.',
+      error: error.message
     });
   }
 };
@@ -205,6 +178,7 @@ const createStripePaymentIntent = async (req, res) => {
 // @access  Private (Buyer)
 const verifyStripePaymentAndConfirmOrder = async (req, res) => {
   try {
+    const stripe = getStripe();
     const { paymentIntentId, orderId } = req.body;
 
     if (!paymentIntentId) {
@@ -214,32 +188,13 @@ const verifyStripePaymentAndConfirmOrder = async (req, res) => {
       });
     }
 
-    let intentStatus = 'succeeded';
+    // Retrieve authentic PaymentIntent directly from Stripe API
+    const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
-    if (!paymentIntentId.startsWith('pi_demo_')) {
-      try {
-        let rawSecret = process.env.STRIPE_SECRET_KEY;
-        if (rawSecret) {
-          let secretKey = rawSecret.trim();
-          if (!secretKey.startsWith('sk_test_') && !secretKey.startsWith('sk_live_')) {
-            secretKey = `sk_test_${secretKey}`;
-          }
-          const Stripe = require('stripe');
-          const stripe = Stripe(secretKey);
-          const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
-          if (intent) {
-            intentStatus = intent.status;
-          }
-        }
-      } catch (err) {
-        console.log('Stripe retrieval exception, bypassing for demo mode verification:', err.message);
-      }
-    }
-
-    if (intentStatus !== 'succeeded') {
+    if (!intent || intent.status !== 'succeeded') {
       return res.status(400).json({
         success: false,
-        message: `Stripe Payment Verification Failed: PaymentIntent status is "${intentStatus}".`
+        message: `Stripe Payment Verification Failed: PaymentIntent status is "${intent?.status || 'unknown'}".`
       });
     }
 
@@ -250,6 +205,11 @@ const verifyStripePaymentAndConfirmOrder = async (req, res) => {
         success: false,
         message: 'Order not found in database for verification.'
       });
+    }
+
+    const expectedCents = Math.round(order.totalPrice * 100);
+    if (intent.amount !== expectedCents) {
+      console.warn(`PaymentIntent amount (${intent.amount}) does not match order amount (${expectedCents})`);
     }
 
     if (order.isPaid) {
@@ -295,18 +255,17 @@ const verifyStripePaymentAndConfirmOrder = async (req, res) => {
       }
     }
 
-    return res.status(200).json({
+    res.json({
       success: true,
-      message: 'Stripe Payment verified, Order marked Paid, Stock reduced, and 5% Platform Commission recorded!',
+      message: 'Stripe Payment verified and order confirmed successfully',
       data: updatedOrder
     });
-
   } catch (error) {
-    console.error('Stripe Payment Verification error:', error);
-    return res.status(500).json({
+    console.error('Stripe Payment Verification Error:', error);
+    res.status(500).json({
       success: false,
-      message: 'Failed to verify Stripe Payment with Stripe API',
-      error: error.message
+      message: error.message,
+      data: null
     });
   }
 };

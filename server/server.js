@@ -60,6 +60,9 @@ app.use(cors({
   },
   credentials: true
 }));
+// Stripe Webhook requires raw request buffer for signature verification
+app.post('/api/payment/webhook', express.raw({ type: 'application/json' }), require('./controllers/paymentController').handleStripeWebhook);
+
 app.use(express.json());
 
 if (process.env.NODE_ENV !== 'production') {
