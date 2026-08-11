@@ -147,7 +147,7 @@ const getSellerDashboard = async (req, res) => {
     orders.forEach(order => {
       order.orderItems.forEach(item => {
         if (item.store.toString() === store._id.toString()) {
-          if (order.isPaid) {
+          if (order.isPaid || ['Paid', 'Processing', 'Packed', 'Shipped', 'Delivered'].includes(order.orderStatus)) {
             totalRevenue += item.price * item.quantity;
             totalItemsSold += item.quantity;
           }
