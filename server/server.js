@@ -39,7 +39,12 @@ app.use(
   })
 );
 
+const clientUrlClean = process.env.CLIENT_URL ? process.env.CLIENT_URL.trim().replace(/\/+$/, '') : null;
+
 const allowedOrigins = [
+  clientUrlClean,
+  clientUrlClean ? `${clientUrlClean}/` : null,
+  'https://artisans-corner-pro.vercel.app',
   'https://artisans-corner-project-d55v.vercel.app',
   'http://localhost:3000',
   'http://localhost:5000'
@@ -47,7 +52,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.indexOf(origin.replace(/\/+$/, '')) !== -1) {
       callback(null, true);
     } else {
       callback(null, true);
