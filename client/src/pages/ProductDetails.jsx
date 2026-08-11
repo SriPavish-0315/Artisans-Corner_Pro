@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { MOCK_CATALOG } from '../data/catalogData';
+import { API_URL } from '../apiConfig';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -27,44 +29,51 @@ const ProductDetails = () => {
 
   const fetchProductDetails = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/products/${id}`);
-      if (data.success) {
+      const { data } = await axios.get(`${API_URL}/products/${id}`);
+      if (data.success && data.data) {
         setProduct(data.data);
-        setSelectedImg(data.data.thumbnail || data.data.images[0]);
+        setSelectedImg(data.data.thumbnail || (data.data.images && data.data.images[0]));
+        if (data.data.reviews) setReviews(data.data.reviews);
+        return;
       }
     } catch (err) {
-      // Demo Fallback item
-      const mockItem = {
-        _id: id || 'p1',
-        name: 'Hand-thrown Speckled Ceramic Coffee Mug',
-        category: 'Pottery & Ceramics',
-        sku: 'POT-1082-KYOTO',
-        price: 38,
-        stock: 12,
-        description: 'Meticulously crafted on the wheel using high-fire stoneware clay. Finished with a satin speckled white glaze and ergonomic handle designed for cozy morning brews.',
-        averageRating: 4.9,
-        totalReviews: 2,
-        images: [
-          'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
-          'https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=800&q=80',
-          'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80'
-        ],
-        thumbnail: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
-        store: {
-          _id: 's1',
-          storeName: 'Terra Cotta Studios',
-          storeDescription: 'Handcrafted stoneware ceramics made in Kyoto.',
-          logoUrl: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=200&q=80'
-        },
-        seller: { name: 'Elena Vance' }
-      };
-      setProduct(mockItem);
-      setSelectedImg(mockItem.images[0]);
-      setReviews([
-        { _id: 'r1', name: 'Sophia Martinez', rating: 5, comment: 'Absolutely stunning quality! Holds heat wonderfully.', createdAt: '2026-07-20' },
-        { _id: 'r2', name: 'Liam Chen', rating: 5, comment: 'The speckled glaze texture feels so premium.', createdAt: '2026-07-15' }
-      ]);
+      console.log('API call failed or running in demo mode. Falling back to local MOCK_CATALOG for id:', id);
     }
+
+    // Dynamic catalog lookup matching the clicked product ID
+    const found = MOCK_CATALOG.find(p => String(p._id) === String(id) || String(p.id) === String(id)) || MOCK_CATALOG[0];
+
+    const mockItem = {
+      _id: found._id || id,
+      name: found.name,
+      category: found.category || 'Artisan Craft',
+      sku: found.sku || `${(found.category || 'ART').substring(0,3).toUpperCase()}-${(found._id || '001').toUpperCase()}`,
+      price: found.price || 30,
+      stock: found.stock || 12,
+      description: found.description || `Meticulously crafted with passion and dedication. Using high-quality sustainable materials and traditional techniques, this ${found.name.toLowerCase()} brings style, beauty, and authenticity to your space.`,
+      averageRating: found.averageRating || 4.8,
+      totalReviews: found.totalReviews || 15,
+      images: found.images || [
+        found.thumbnail,
+        'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=800&q=80'
+      ],
+      thumbnail: found.thumbnail,
+      store: {
+        _id: found.store?._id || 's1',
+        storeName: found.store?.storeName || 'Artisan Corner Workshop',
+        storeDescription: found.store?.storeDescription || 'Handcrafted goods created by verified independent artisans.',
+        logoUrl: found.store?.logoUrl || found.thumbnail
+      },
+      seller: { name: found.seller?.name || 'Verified Artisan' }
+    };
+
+    setProduct(mockItem);
+    setSelectedImg(mockItem.thumbnail || mockItem.images[0]);
+    setReviews([
+      { _id: 'r1', name: 'Sophia Martinez', rating: 5, comment: 'Absolutely stunning quality! Exceeded all my expectations.', createdAt: '2026-07-20' },
+      { _id: 'r2', name: 'Liam Chen', rating: 5, comment: 'Beautiful craftsmanship and fast shipping. Highly recommend!', createdAt: '2026-07-15' }
+    ]);
   };
 
   const handleAddToCart = () => {
@@ -91,7 +100,7 @@ const ProductDetails = () => {
       const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       };
-      const { data } = await axios.post('http://localhost:5000/api/reviews', {
+      const { data } = await axios.post(`${API_URL}/reviews`, {
         productId: product._id,
         rating,
         comment

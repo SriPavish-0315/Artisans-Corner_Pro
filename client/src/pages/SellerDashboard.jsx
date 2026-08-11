@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import { API_URL } from '../apiConfig';
 
 const SellerDashboard = () => {
   const { user } = useAuth();
@@ -17,13 +18,13 @@ const SellerDashboard = () => {
   });
 
   const [products, setProducts] = useState([
-    { _id: 'p1', name: 'Hand-thrown Speckled Ceramic Mug', category: 'Pottery & Ceramics', price: 38, stock: 12, status: 'active' },
-    { _id: 'p2', name: 'Raw Stoneware Teapot', category: 'Pottery & Ceramics', price: 85, stock: 4, status: 'active' },
-    { _id: 'p3', name: 'Ceramic Serving Bowl Set', category: 'Pottery & Ceramics', price: 62, stock: 0, status: 'out_of_stock' }
+    { _id: 'pc01', name: 'Hand-thrown Speckled Ceramic Mug', category: 'Pottery & Ceramics', price: 38, stock: 12, status: 'active' },
+    { _id: 'pc02', name: 'Raw Stoneware Teapot', category: 'Pottery & Ceramics', price: 85, stock: 4, status: 'active' },
+    { _id: 'pc03', name: 'Ceramic Serving Bowl Set', category: 'Pottery & Ceramics', price: 62, stock: 0, status: 'out_of_stock' }
   ]);
 
   const [orders, setOrders] = useState([
-    { _id: 'ord_101', buyerName: 'Jane Buyer', itemsCount: 2, totalAmount: 76, orderStatus: 'Pending', createdAt: '2026-07-28' },
+    { _id: 'ord_101', buyerName: 'Customer', itemsCount: 2, totalAmount: 76, orderStatus: 'Pending', createdAt: '2026-07-28' },
     { _id: 'ord_102', buyerName: 'Mark Vance', itemsCount: 1, totalAmount: 85, orderStatus: 'Processing', createdAt: '2026-07-27' },
     { _id: 'ord_103', buyerName: 'Sarah Miller', itemsCount: 3, totalAmount: 162, orderStatus: 'Delivered', createdAt: '2026-07-24' }
   ]);
@@ -47,7 +48,7 @@ const SellerDashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get('http://localhost:5000/api/stores/dashboard', config);
+      const { data } = await axios.get(`${API_URL}/stores/dashboard`, config);
       if (data.success && data.data) {
         setMetrics(data.data.metrics);
         if (data.data.recentOrders) setOrders(data.data.recentOrders);
@@ -267,7 +268,7 @@ const SellerDashboard = () => {
               <div key={o._id} className="p-4 rounded-2xl bg-amber-50/40 border border-amber-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                   <span className="text-xs font-bold text-amber-800">Order #{o._id}</span>
-                  <h4 className="font-bold text-gray-900 text-sm">Customer: {o.buyerName || 'Jane Buyer'}</h4>
+                  <h4 className="font-bold text-gray-900 text-sm">Customer: {o.buyerName || 'Valued Customer'}</h4>
                   <p className="text-xs text-gray-500">Total: ${o.totalAmount} ({o.itemsCount || 1} items)</p>
                 </div>
 

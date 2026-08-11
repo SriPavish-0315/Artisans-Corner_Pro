@@ -5,28 +5,7 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
     const saved = localStorage.getItem('artisans_cart');
-    return saved ? JSON.parse(saved) : [
-      {
-        _id: 'p1',
-        name: 'Hand-thrown Ceramic Coffee Mug',
-        price: 38,
-        thumbnail: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80',
-        quantity: 2,
-        stock: 10,
-        seller: 'u2',
-        store: { _id: 's1', storeName: 'Terra Cotta Studios' }
-      },
-      {
-        _id: 'p2',
-        name: 'Walnut & Epoxy River Serving Board',
-        price: 120,
-        thumbnail: 'https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80',
-        quantity: 1,
-        stock: 4,
-        seller: 'u2',
-        store: { _id: 's1', storeName: 'Terra Cotta Studios' }
-      }
-    ];
+    return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {

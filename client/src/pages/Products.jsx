@@ -3,6 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import { MOCK_CATALOG, CATEGORY_NAMES as CATEGORIES } from '../data/catalogData';
+import { API_URL } from '../apiConfig';
 
 const Products = () => {
   const location = useLocation();
@@ -27,7 +28,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      let url = `http://localhost:5000/api/products?page=${page}&limit=8&maxPrice=${maxPrice}`;
+      let url = `${API_URL}/products?page=${page}&limit=8&maxPrice=${maxPrice}`;
       if (selectedCategory !== 'All Categories') url += `&category=${encodeURIComponent(selectedCategory)}`;
       if (keyword) url += `&keyword=${encodeURIComponent(keyword)}`;
 

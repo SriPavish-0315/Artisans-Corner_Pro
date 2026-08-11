@@ -5,42 +5,58 @@ import { useAuth } from '../context/AuthContext';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [adminPasscode, setAdminPasscode] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showAdminPasscode, setShowAdminPasscode] = useState(false);
+  const [selectedRole, setSelectedRole] = useState('buyer');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  const isAdminMode = selectedRole === 'admin' || email.toLowerCase().includes('admin');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (isAdminMode && adminPasscode !== 'shop_@') {
+      setError('Invalid Admin Security Code! Default admin passcode shop_@ is required.');
+      return;
+    }
+
     setLoading(true);
 
-    const res = await login(email, password);
+    const res = await login(email, password, adminPasscode);
     setLoading(false);
 
     if (res.success) {
-      navigate('/');
+      const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+      if (storedUser.role === 'admin') {
+        navigate('/admin/dashboard');
+      } else if (storedUser.role === 'seller') {
+        navigate('/seller/dashboard');
+      } else {
+        navigate('/');
+      }
     } else {
       setError(res.message);
     }
   };
 
-  const fillDemo = (role) => {
-    if (role === 'buyer') {
-      setEmail('buyer@example.com');
-      setPassword('password123');
-    } else if (role === 'seller') {
-      setEmail('seller@example.com');
-      setPassword('password123');
-    } else if (role === 'admin') {
-      setEmail('admin@example.com');
-      setPassword('password123');
+  const [registeredList, setRegisteredList] = useState(() => {
+    const raw = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
+    // Filter out all default demo emails so only manually registered users remain in database
+    const realUsers = raw.filter(u => u && u.email && !u.email.toLowerCase().includes('example.com') && !u.email.toLowerCase().includes('artisans.com'));
+    if (raw.length !== realUsers.length) {
+      localStorage.setItem('artisans_registered_users', JSON.stringify(realUsers));
     }
-  };
+    return realUsers;
+  });
 
   return (
-    <div className="max-w-md mx-auto px-4 py-16">
+    <div className="max-w-md mx-auto px-4 py-12">
       <div className="bg-white rounded-3xl p-8 border border-amber-100 shadow-xl space-y-6">
         
         <div className="text-center space-y-2">
@@ -48,32 +64,7 @@ const Login = () => {
             <i className="fa-solid fa-shapes"></i>
           </div>
           <h2 className="font-serif-title text-2xl font-bold text-gray-900">Welcome Back</h2>
-          <p className="text-xs text-gray-500">Sign in to your Artisan's Corner account</p>
-        </div>
-
-        {/* Quick Demo Credentials Panel */}
-        <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200 space-y-2 text-center">
-          <p className="text-[11px] font-bold text-amber-900 uppercase tracking-wider">Quick Demo Auto-Fill</p>
-          <div className="flex gap-2 justify-center">
-            <button
-              onClick={() => fillDemo('buyer')}
-              className="px-2.5 py-1 bg-amber-200 text-amber-950 font-bold text-[10px] rounded-lg hover:bg-amber-300"
-            >
-              Demo Buyer
-            </button>
-            <button
-              onClick={() => fillDemo('seller')}
-              className="px-2.5 py-1 bg-amber-800 text-white font-bold text-[10px] rounded-lg hover:bg-amber-900"
-            >
-              Demo Seller
-            </button>
-            <button
-              onClick={() => fillDemo('admin')}
-              className="px-2.5 py-1 bg-purple-800 text-white font-bold text-[10px] rounded-lg hover:bg-purple-900"
-            >
-              Demo Admin
-            </button>
-          </div>
+          <p className="text-xs text-gray-500">Sign in with your registered account credentials</p>
         </div>
 
         {error && <div className="p-3 bg-red-50 text-red-700 rounded-xl text-xs font-semibold">{error}</div>}
@@ -93,15 +84,60 @@ const Login = () => {
 
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Password</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
-            />
+            <div className="relative flex items-center">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full p-3 pr-10 bg-amber-50/40 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 text-gray-500 hover:text-amber-900 text-sm focus:outline-none transition-colors"
+                title={showPassword ? 'Hide Password' : 'Show Password'}
+              >
+                <i className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+              </button>
+            </div>
           </div>
+
+          {/* Admin Verification Code Input Field with Eye Toggle */}
+          {isAdminMode && (
+            <div className="bg-purple-50 p-4 rounded-2xl border border-purple-200 space-y-2 animate-fadeIn">
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-extrabold text-purple-950 flex items-center gap-1.5">
+                  <i className="fa-solid fa-key text-purple-700"></i> Admin Security Passcode *
+                </label>
+                <span className="text-[10px] bg-purple-200 text-purple-900 px-2 py-0.5 rounded-full font-bold">
+                  Code: shop_@
+                </span>
+              </div>
+              <div className="relative flex items-center">
+                <input
+                  type={showAdminPasscode ? 'text' : 'password'}
+                  required
+                  value={adminPasscode}
+                  onChange={(e) => setAdminPasscode(e.target.value)}
+                  placeholder="Enter default code (shop_@)"
+                  className="w-full p-3 pr-10 bg-white border border-purple-300 rounded-xl text-xs font-mono font-bold text-purple-950 focus:outline-none focus:ring-2 focus:ring-purple-700"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowAdminPasscode(!showAdminPasscode)}
+                  className="absolute right-3 text-purple-700 hover:text-purple-950 text-sm focus:outline-none transition-colors font-bold"
+                  title={showAdminPasscode ? 'Hide Passcode' : 'Show Passcode'}
+                >
+                  <i className={`fa-solid ${showAdminPasscode ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                </button>
+              </div>
+              <p className="text-[10px] text-purple-700 font-semibold">
+                Admin authentication required. Default code is <code className="bg-purple-200 px-1 py-0.5 rounded font-bold">shop_@</code>
+              </p>
+            </div>
+          )}
 
           <button
             type="submit"
@@ -115,6 +151,63 @@ const Login = () => {
         <p className="text-center text-xs text-gray-500">
           Don't have an account? <Link to="/register" className="font-bold text-amber-800 hover:underline">Register here</Link>
         </p>
+
+        {/* Recommended Registered Credentials Box */}
+        <div className="pt-2 border-t border-amber-100">
+          <div className="bg-amber-50/80 p-4 rounded-2xl border border-amber-200 space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="text-xs font-extrabold text-amber-950 flex items-center gap-1.5 uppercase tracking-wide">
+                <i className="fa-solid fa-address-card text-amber-800"></i> Registered Account Database
+              </h4>
+              <span className="text-[10px] font-bold bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full">
+                {registeredList.length} User(s)
+              </span>
+            </div>
+
+            {registeredList.length > 0 ? (
+              <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                {registeredList.map((u, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => {
+                      setEmail(u.email);
+                      setPassword(u.password || '');
+                      if (u.role === 'admin') setAdminPasscode('shop_@');
+                      setSelectedRole(u.role);
+                    }}
+                    className="p-2.5 bg-white hover:bg-amber-100/70 rounded-xl border border-amber-200/60 flex items-center justify-between cursor-pointer transition-colors group shadow-2xs"
+                  >
+                    <div>
+                      <p className="text-xs font-bold text-gray-900 group-hover:text-amber-900 flex items-center gap-1.5">
+                        {u.name}
+                        <span className={`text-[9px] font-mono font-extrabold uppercase px-1.5 py-0.5 rounded ${
+                          u.role === 'admin' ? 'bg-purple-100 text-purple-900' :
+                          u.role === 'seller' ? 'bg-amber-100 text-amber-900' :
+                          u.role === 'delivery' ? 'bg-blue-100 text-blue-900' :
+                          'bg-emerald-100 text-emerald-900'
+                        }`}>
+                          {u.role}
+                        </span>
+                      </p>
+                      <p className="text-[11px] font-mono text-gray-600">Email: {u.email}</p>
+                      <p className="text-[10px] font-mono text-gray-400">Password: {u.password}</p>
+                    </div>
+                    <span className="text-[10px] font-bold text-amber-800 bg-amber-50 group-hover:bg-amber-800 group-hover:text-white px-2 py-1 rounded-lg transition-colors">
+                      Fill <i className="fa-solid fa-arrow-right text-[9px] ml-0.5"></i>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-3 text-xs text-amber-900/80 font-medium space-y-1">
+                <p className="font-bold text-amber-950">No registered user accounts found in database yet.</p>
+                <p className="text-[11px] text-amber-800">
+                  Please click <Link to="/register" className="underline font-extrabold text-amber-900">Register here</Link> to create your account!
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
 
       </div>
     </div>

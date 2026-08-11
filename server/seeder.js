@@ -39,49 +39,16 @@ const seedDB = async (quiet = false) => {
       }
     }
 
-    // 1. Create Users
-    const buyer = await User.create({
-      name: 'Eleanor Vance',
-      email: 'buyer@example.com',
-      password: 'password123',
-      role: 'buyer',
-      phone: '+1 (555) 234-5678',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
-      addresses: [{
-        street: '742 Evergreen Terrace',
-        city: 'Springfield',
-        state: 'IL',
-        postalCode: '62704',
-        country: 'USA',
-        isDefault: true
-      }]
-    });
+    // 1. Create Mock Seller ID for Seed Store & Products
+    const sellerId = new mongoose.Types.ObjectId();
 
-    const seller = await User.create({
-      name: 'Mateo Rossi',
-      email: 'seller@example.com',
-      password: 'password123',
-      role: 'seller',
-      phone: '+1 (555) 876-5432',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'
-    });
-
-    const admin = await User.create({
-      name: 'System Admin',
-      email: 'admin@example.com',
-      password: 'password123',
-      role: 'admin',
-      phone: '+1 (555) 999-0000',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80'
-    });
-
-    // 2. Create Store for Seller
+    // 2. Create Store for Artisan Products
     const store = await Store.create({
-      owner: seller._id,
+      owner: sellerId,
       storeName: 'Heritage Handcrafts',
       storeDescription: 'Crafting timeless ceramic, wooden, and textile art using century-old techniques. Each piece is handmade with passion, sustainable materials, and attention to detail.',
-      logoUrl: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=200&q=80',
-      bannerUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1200&q=80',
+      logoUrl: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=80&sig=seed_1',
+      bannerUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80&sig=seed_2',
       status: 'active',
       totalSales: 15,
       totalRevenue: 1250.00,
@@ -89,9 +56,7 @@ const seedDB = async (quiet = false) => {
       platformCommissionPaid: 62.50
     });
 
-    // Link store to seller user
-    seller.store = store._id;
-    await seller.save();
+    const seller = { _id: sellerId, store: store._id };
 
     // 3. Create Products
     const productsData = [
@@ -105,10 +70,10 @@ const seedDB = async (quiet = false) => {
         price: 85.00,
         discountPrice: 75.00,
         stock: 12,
-        thumbnail: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80&sig=seed_3',
         images: [
-          'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80',
-          'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80&sig=seed_4',
+          'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80&sig=seed_5'
         ],
         tags: ['ceramic', 'tea', 'handmade', 'pottery', 'kitchen'],
         averageRating: 4.8,
@@ -124,9 +89,9 @@ const seedDB = async (quiet = false) => {
         price: 64.00,
         discountPrice: 58.00,
         stock: 9,
-        thumbnail: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80&sig=seed_6',
         images: [
-          'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80&sig=seed_7'
         ],
         tags: ['ceramics', 'stoneware', 'dinnerware', 'handmade'],
         averageRating: 4.6,
@@ -142,9 +107,9 @@ const seedDB = async (quiet = false) => {
         price: 49.00,
         discountPrice: 42.00,
         stock: 7,
-        thumbnail: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80&sig=seed_8',
         images: [
-          'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80&sig=seed_9'
         ],
         tags: ['vase', 'ceramic', 'decor', 'handmade'],
         averageRating: 4.7,
@@ -160,9 +125,9 @@ const seedDB = async (quiet = false) => {
         price: 92.00,
         discountPrice: 84.00,
         stock: 6,
-        thumbnail: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80&sig=seed_10',
         images: [
-          'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80&sig=seed_11'
         ],
         tags: ['jewelry', 'silver', 'pendant', 'handmade'],
         averageRating: 4.9,
@@ -178,9 +143,9 @@ const seedDB = async (quiet = false) => {
         price: 34.00,
         discountPrice: 29.00,
         stock: 11,
-        thumbnail: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=600&q=80&sig=seed_12',
         images: [
-          'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=600&q=80&sig=seed_13'
         ],
         tags: ['bracelet', 'leather', 'accessories', 'handmade'],
         averageRating: 4.5,
@@ -196,9 +161,9 @@ const seedDB = async (quiet = false) => {
         price: 62.00,
         discountPrice: 55.00,
         stock: 5,
-        thumbnail: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80&sig=seed_14',
         images: [
-          'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80&sig=seed_15'
         ],
         tags: ['wooden bowl', 'walnut', 'carved', 'kitchenware', 'handmade'],
         averageRating: 5.0,
@@ -214,9 +179,9 @@ const seedDB = async (quiet = false) => {
         price: 310.00,
         discountPrice: 285.00,
         stock: 3,
-        thumbnail: 'https://images.unsplash.com/photo-1519947486511-46149fa0a254?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1519947486511-46149fa0a254?auto=format&fit=crop&w=600&q=80&sig=seed_16',
         images: [
-          'https://images.unsplash.com/photo-1519947486511-46149fa0a254?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1519947486511-46149fa0a254?auto=format&fit=crop&w=600&q=80&sig=seed_17'
         ],
         tags: ['furniture', 'oak', 'live edge', 'woodworking'],
         averageRating: 4.8,
@@ -232,9 +197,9 @@ const seedDB = async (quiet = false) => {
         price: 45.00,
         discountPrice: 0,
         stock: 8,
-        thumbnail: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80&sig=seed_18',
         images: [
-          'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80&sig=seed_19'
         ],
         tags: ['macrame', 'wall decor', 'woven', 'cotton', 'boho'],
         averageRating: 4.9,
@@ -250,9 +215,9 @@ const seedDB = async (quiet = false) => {
         price: 29.00,
         discountPrice: 24.00,
         stock: 12,
-        thumbnail: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80&sig=seed_20',
         images: [
-          'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80&sig=seed_21'
         ],
         tags: ['textile', 'pillow', 'indigo', 'cotton'],
         averageRating: 4.6,
@@ -268,9 +233,9 @@ const seedDB = async (quiet = false) => {
         price: 38.00,
         discountPrice: 0,
         stock: 20,
-        thumbnail: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80&sig=seed_22',
         images: [
-          'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80&sig=seed_23'
         ],
         tags: ['leather', 'journal', 'notebook', 'brass', 'stationery'],
         averageRating: 4.7,
@@ -286,9 +251,9 @@ const seedDB = async (quiet = false) => {
         price: 16.00,
         discountPrice: 14.00,
         stock: 18,
-        thumbnail: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80&sig=seed_24',
         images: [
-          'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80&sig=seed_25'
         ],
         tags: ['cards', 'paper', 'stationery', 'gift'],
         averageRating: 4.4,
@@ -304,9 +269,9 @@ const seedDB = async (quiet = false) => {
         price: 33.00,
         discountPrice: 29.00,
         stock: 10,
-        thumbnail: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=600&q=80&sig=seed_26',
         images: [
-          'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=600&q=80&sig=seed_27'
         ],
         tags: ['planter', 'home decor', 'ceramic', 'garden'],
         averageRating: 4.8,
@@ -322,9 +287,9 @@ const seedDB = async (quiet = false) => {
         price: 28.00,
         discountPrice: 24.00,
         stock: 15,
-        thumbnail: 'https://images.unsplash.com/photo-1605651202774-7d573fd3f12d?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1605651202774-7d573fd3f12d?auto=format&fit=crop&w=600&q=80&sig=seed_28',
         images: [
-          'https://images.unsplash.com/photo-1605651202774-7d573fd3f12d?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1605651202774-7d573fd3f12d?auto=format&fit=crop&w=600&q=80&sig=seed_29'
         ],
         tags: ['candles', 'soy wax', 'essential oils', 'aromatherapy', 'gift set'],
         averageRating: 4.9,
@@ -340,9 +305,9 @@ const seedDB = async (quiet = false) => {
         price: 24.00,
         discountPrice: 21.00,
         stock: 13,
-        thumbnail: 'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80&sig=seed_30',
         images: [
-          'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80&sig=seed_31'
         ],
         tags: ['room spray', 'botanicals', 'aromatherapy', 'gift'],
         averageRating: 4.7,
@@ -358,9 +323,9 @@ const seedDB = async (quiet = false) => {
         price: 55.00,
         discountPrice: 0,
         stock: 10,
-        thumbnail: 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80',
+        thumbnail: 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80&sig=seed_32',
         images: [
-          'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80'
+          'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80&sig=seed_33'
         ],
         tags: ['scarf', 'pashmina', 'handwoven', 'silk', 'fashion'],
         averageRating: 5.0,
@@ -376,8 +341,8 @@ const seedDB = async (quiet = false) => {
         price: 52.00,
         discountPrice: 46.00,
         stock: 8,
-        thumbnail: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80',
-        images: ['https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80'],
+        thumbnail: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80&sig=seed_34',
+        images: ['https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80&sig=seed_35'],
         tags: ['pitcher', 'terracotta', 'ceramics', 'kitchen'],
         averageRating: 4.8,
         totalReviews: 6
@@ -392,8 +357,8 @@ const seedDB = async (quiet = false) => {
         price: 54.00,
         discountPrice: 48.00,
         stock: 14,
-        thumbnail: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80',
-        images: ['https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80'],
+        thumbnail: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80&sig=seed_36',
+        images: ['https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80&sig=seed_37'],
         tags: ['ring', 'silver', 'jewelry', 'handmade'],
         averageRating: 4.9,
         totalReviews: 8
@@ -408,8 +373,8 @@ const seedDB = async (quiet = false) => {
         price: 38.00,
         discountPrice: 32.00,
         stock: 16,
-        thumbnail: 'https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80',
-        images: ['https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80'],
+        thumbnail: 'https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80&sig=seed_38',
+        images: ['https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80&sig=seed_39'],
         tags: ['coasters', 'woodworking', 'resin', 'home decor'],
         averageRating: 5.0,
         totalReviews: 9
@@ -424,8 +389,8 @@ const seedDB = async (quiet = false) => {
         price: 115.00,
         discountPrice: 98.00,
         stock: 4,
-        thumbnail: 'https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=600&q=80',
-        images: ['https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=600&q=80'],
+        thumbnail: 'https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=600&q=80&sig=seed_40',
+        images: ['https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=600&q=80&sig=seed_41'],
         tags: ['pouf', 'knit', 'wool', 'furniture', 'textile'],
         averageRating: 4.9,
         totalReviews: 5
@@ -440,8 +405,8 @@ const seedDB = async (quiet = false) => {
         price: 26.00,
         discountPrice: 22.00,
         stock: 22,
-        thumbnail: 'https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=600&q=80',
-        images: ['https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=600&q=80'],
+        thumbnail: 'https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=600&q=80&sig=seed_42',
+        images: ['https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=600&q=80&sig=seed_43'],
         tags: ['wax seal', 'stationery', 'vintage', 'gift'],
         averageRating: 4.8,
         totalReviews: 7
@@ -456,8 +421,8 @@ const seedDB = async (quiet = false) => {
         price: 135.00,
         discountPrice: 120.00,
         stock: 5,
-        thumbnail: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?auto=format&fit=crop&w=600&q=80',
-        images: ['https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?auto=format&fit=crop&w=600&q=80'],
+        thumbnail: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?auto=format&fit=crop&w=600&q=80&sig=seed_44',
+        images: ['https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?auto=format&fit=crop&w=600&q=80&sig=seed_45'],
         tags: ['lamp', 'lighting', 'home decor', 'ceramic'],
         averageRating: 4.9,
         totalReviews: 4
@@ -472,8 +437,8 @@ const seedDB = async (quiet = false) => {
         price: 25.00,
         discountPrice: 0,
         stock: 19,
-        thumbnail: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80',
-        images: ['https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80'],
+        thumbnail: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80&sig=seed_46',
+        images: ['https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80&sig=seed_47'],
         tags: ['beeswax', 'candle', 'vanilla', 'cinnamon'],
         averageRating: 4.9,
         totalReviews: 12
@@ -488,8 +453,8 @@ const seedDB = async (quiet = false) => {
         price: 75.00,
         discountPrice: 65.00,
         stock: 10,
-        thumbnail: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80',
-        images: ['https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80'],
+        thumbnail: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80&sig=seed_48',
+        images: ['https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80&sig=seed_49'],
         tags: ['artwork', 'abstract', 'colorblock', 'poster', 'painting'],
         averageRating: 4.9,
         totalReviews: 31
@@ -504,8 +469,8 @@ const seedDB = async (quiet = false) => {
         price: 60.00,
         discountPrice: 50.00,
         stock: 15,
-        thumbnail: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80',
-        images: ['https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80'],
+        thumbnail: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80&sig=seed_50',
+        images: ['https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80&sig=seed_51'],
         tags: ['botanical', 'sketch', 'vintage', 'drawing', 'poster'],
         averageRating: 4.8,
         totalReviews: 28
@@ -514,11 +479,21 @@ const seedDB = async (quiet = false) => {
 
     const createdProducts = await Product.insertMany(productsData);
 
+    const buyerId = new mongoose.Types.ObjectId();
+    const seedShippingAddress = {
+      street: '742 Artisan Way',
+      city: 'Craft City',
+      state: 'CA',
+      postalCode: '90210',
+      country: 'USA',
+      isDefault: true
+    };
+
     const createOrderNumber = (suffix) => `ORD-${Date.now()}-${String(suffix).padStart(2, '0')}`;
 
     // 4. Create Sample Orders
     const order1 = await Order.create({
-      buyer: buyer._id,
+      buyer: buyerId,
       orderNumber: createOrderNumber(1),
       orderItems: [
         {
@@ -540,7 +515,7 @@ const seedDB = async (quiet = false) => {
           store: store._id
         }
       ],
-      shippingAddress: buyer.addresses[0],
+      shippingAddress: seedShippingAddress,
       paymentMethod: 'Stripe (Simulated)',
       itemsPrice: 147.00,
       platformFee: 7.35,
@@ -555,7 +530,7 @@ const seedDB = async (quiet = false) => {
     });
 
     const order2 = await Order.create({
-      buyer: buyer._id,
+      buyer: buyerId,
       orderNumber: createOrderNumber(2),
       orderItems: [
         {
@@ -568,7 +543,7 @@ const seedDB = async (quiet = false) => {
           store: store._id
         }
       ],
-      shippingAddress: buyer.addresses[0],
+      shippingAddress: seedShippingAddress,
       paymentMethod: 'Stripe (Simulated)',
       itemsPrice: 90.00,
       platformFee: 4.50,
@@ -584,18 +559,18 @@ const seedDB = async (quiet = false) => {
     // 5. Create Reviews
     await Review.create({
       product: createdProducts[0]._id,
-      user: buyer._id,
-      name: buyer.name,
+      user: buyerId,
+      name: 'Happy Customer',
       rating: 5,
       comment: 'Absolutely stunning quality! The ceramic teapot holds heat remarkably well and looks incredible on my dining table.'
     });
 
     await Review.create({
       product: createdProducts[2]._id,
-      user: buyer._id,
-      name: buyer.name,
+      user: buyerId,
+      name: 'Happy Customer',
       rating: 5,
-      comment: 'The walnut grain is gorgeous and feels so smooth. Highly recommend Heritage Handcrafts!'
+      comment: 'Superb craftsmanship and fast shipping! Will definitely buy more items from this store.'
     });
 
     if (!quiet) console.log('✅ Database seeded successfully with demo users, stores, products & orders!');

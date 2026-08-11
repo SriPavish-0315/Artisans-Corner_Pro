@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../apiConfig';
 
 const STATUS_STEPS = ['Pending', 'Paid', 'Processing', 'Packed', 'Shipped', 'Delivered'];
 
@@ -16,7 +17,7 @@ const OrderDetails = () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get(`http://localhost:5000/api/orders/${id}`, config);
+      const { data } = await axios.get(`${API_URL}/orders/${id}`, config);
       if (data.success) {
         setOrder(data.data);
       }
@@ -69,10 +70,16 @@ const OrderDetails = () => {
           <h1 className="font-serif-title text-2xl font-bold text-gray-900">Order #{order._id}</h1>
           <p className="text-xs text-gray-500 mt-0.5">Placed on {new Date(order.createdAt).toLocaleDateString()}</p>
         </div>
-        <div className="text-right">
+        <div className="flex items-center gap-3">
           <span className="inline-block px-4 py-1.5 rounded-full text-xs font-extrabold bg-green-100 text-green-800 border border-green-200">
             Payment Status: {order.isPaid ? 'PAID via Stripe' : 'Unpaid'}
           </span>
+          <Link
+            to="/admin/dashboard"
+            className="px-3.5 py-1.5 bg-purple-900 hover:bg-purple-950 text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center gap-1.5"
+          >
+            <i className="fa-solid fa-user-shield text-amber-400"></i> Admin Panel
+          </Link>
         </div>
       </div>
 

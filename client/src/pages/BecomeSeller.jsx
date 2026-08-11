@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../apiConfig';
 
 const BecomeSeller = () => {
   const { user, updateRoleToSeller } = useAuth();
@@ -35,7 +36,7 @@ const BecomeSeller = () => {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
-      const { data } = await axios.post('http://localhost:5000/api/stores', formData, config);
+      const { data } = await axios.post(`${API_URL}/stores`, formData, config);
       
       if (data.success) {
         updateRoleToSeller(data.data);

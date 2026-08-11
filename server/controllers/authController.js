@@ -21,7 +21,7 @@ const registerUser = async (req, res) => {
       name,
       email,
       password,
-      role: role && ['buyer', 'seller'].includes(role) ? role : 'buyer'
+      role: role && ['buyer', 'seller', 'admin', 'delivery'].includes(role) ? role : 'buyer'
     });
 
     if (user) {

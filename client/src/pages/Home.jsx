@@ -2,55 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
-import { CATEGORIES } from '../data/catalogData';
+import { CATEGORIES, MOCK_CATALOG } from '../data/catalogData';
+import { API_URL } from '../apiConfig';
 
 // Mock initial featured products to ensure instant rich visuals if backend server is starting
-const SAMPLE_PRODUCTS = [
-  {
-    _id: 'p1',
-    name: 'Hand-thrown Speckled Ceramic Mug',
-    category: 'Pottery & Ceramics',
-    price: 38,
-    discountPrice: 45,
-    averageRating: 4.9,
-    totalReviews: 24,
-    thumbnail: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80',
-    store: { storeName: 'Terra Cotta Studios' }
-  },
-  {
-    _id: 'p2',
-    name: 'Walnut & Ocean Resin Board',
-    category: 'Woodworking & Furniture',
-    price: 120,
-    discountPrice: 140,
-    averageRating: 5.0,
-    totalReviews: 18,
-    thumbnail: 'https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80',
-    store: { storeName: 'Wood & Wave Artisans' }
-  },
-  {
-    _id: 'p3',
-    name: 'Raw Emerald & Gold Filled Pendant',
-    category: 'Jewelry & Accessories',
-    price: 85,
-    discountPrice: 0,
-    averageRating: 4.8,
-    totalReviews: 31,
-    thumbnail: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80',
-    store: { storeName: 'Lumina Gems' }
-  },
-  {
-    _id: 'p4',
-    name: 'Hand-loomed Linen Throw Blanket',
-    category: 'Textiles & Fiber Art',
-    price: 95,
-    discountPrice: 110,
-    averageRating: 4.7,
-    totalReviews: 12,
-    thumbnail: 'https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=600&q=80',
-    store: { storeName: 'Weaver & Loom' }
-  }
-];
+const SAMPLE_PRODUCTS = MOCK_CATALOG.slice(0, 8);
 
 const Home = () => {
   const [products, setProducts] = useState(SAMPLE_PRODUCTS);
@@ -60,7 +16,7 @@ const Home = () => {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/products?limit=8');
+        const { data } = await axios.get(`${API_URL}/products?limit=8`);
         if (data.success && data.data.length > 0) {
           setProducts(data.data);
         }

@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, emailNotification } = useAuth();
   const { totalItemCount } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,6 +39,27 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      {/* Real-Time Email Notification Alert for Logged In User */}
+      {emailNotification && user && emailNotification.to?.toLowerCase() === user.email?.toLowerCase() && (
+        <div className="bg-emerald-950 text-emerald-100 border-b border-emerald-800 px-4 py-2.5 shadow-xl flex items-center justify-between">
+          <div className="flex items-center gap-3 max-w-7xl mx-auto w-full text-xs font-semibold">
+            <span className="w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center text-base shadow shrink-0">
+              <i className="fa-solid fa-envelope-circle-check"></i>
+            </span>
+            <div>
+              <p className="font-extrabold text-emerald-300 tracking-wide uppercase text-[10px]">
+                {emailNotification.subject} • Recipient: <span className="underline text-white font-mono">{emailNotification.to}</span>
+              </p>
+              <p className="text-emerald-100 text-xs font-medium">{emailNotification.body}</p>
+            </div>
+          </div>
+          <span className="text-[10px] bg-emerald-800 text-emerald-200 px-2 py-0.5 rounded font-mono shrink-0">
+            {emailNotification.timestamp}
+          </span>
+        </div>
+      )}
+
+
 
       {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,6 +105,17 @@ const Navbar = () => {
               <i className="fa-solid fa-store mr-1.5 text-amber-700"></i> Explore Goods
             </Link>
 
+            {/* Admin Panel Quick Link - Visible ONLY when authenticated as Admin */}
+            {user && user.role === 'admin' && (
+              <Link
+                to="/admin/dashboard"
+                className="hidden sm:flex items-center text-xs font-bold bg-purple-100 text-purple-950 px-3 py-1.5 rounded-full border border-purple-300 hover:bg-purple-200 transition-all shadow-xs"
+                title="Admin Inventory & Stock Control"
+              >
+                <i className="fa-solid fa-user-shield mr-1.5 text-purple-700"></i> Admin Panel
+              </Link>
+            )}
+
             {/* Become Seller CTA if Buyer */}
             {(!user || user.role === 'buyer') && (
               <Link
@@ -97,7 +129,7 @@ const Navbar = () => {
             {/* Shopping Cart Icon */}
             <Link to="/cart" className="relative p-2.5 rounded-full hover:bg-amber-100/60 text-gray-700 hover:text-amber-900 transition-all">
               <i className="fa-solid fa-basket-shopping text-xl"></i>
-              {totalItemCount > 0 && (
+              {user && totalItemCount > 0 && (
                 <span className="absolute top-0 right-0 bg-red-600 text-white text-[11px] font-bold rounded-full h-5 w-5 flex items-center justify-center animate-bounce shadow">
                   {totalItemCount}
                 </span>

@@ -39,8 +39,8 @@ const Profile = () => {
           <span className="px-3 py-1 text-[10px] font-bold uppercase rounded-full bg-amber-100 text-amber-800 border border-amber-200">
             {user?.role || 'Buyer'} Account
           </span>
-          <h1 className="font-serif-title text-2xl sm:text-3xl font-bold text-gray-900 mt-1">{user?.name || 'Jane Buyer'}</h1>
-          <p className="text-xs text-gray-500">{user?.email || 'buyer@example.com'}</p>
+          <h1 className="font-serif-title text-2xl sm:text-3xl font-bold text-gray-900 mt-1">{user?.name || 'User Profile'}</h1>
+          <p className="text-xs text-gray-500">{user?.email || 'No email registered'}</p>
         </div>
 
         {user?.role === 'buyer' && (

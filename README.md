@@ -1,108 +1,80 @@
-# 🎨 Artisan's Corner - Multi-Vendor Marketplace for Handmade Goods
+# 🎨 Artisan's Corner — Multi-Vendor Marketplace Platform
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/Node.js-v18+-green.svg)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/React-v18-blue.svg)](https://reactjs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-brightgreen.svg)](https://www.mongodb.com/)
-
-**Artisan's Corner** is an enterprise-grade, multi-vendor e-commerce marketplace built using the **MERN Stack** (MongoDB, Express.js, React, Node.js). The platform enables independent craftsmen and local artisans to create branded stores, list handcrafted products, and sell globally.
+**Artisan's Corner** is a full-stack, production-ready multi-vendor e-commerce platform built with React, Vite, Node.js, Express, MongoDB, Verified Stripe PaymentIntents, Cloudinary CDN Image Uploads, and Door Delivery Logistics Management.
 
 ---
 
-## 🌟 Key Features
+## 🌟 Verified Stripe PaymentIntent Flow
 
-### 👤 Role-Based Authorization
-- **Buyer**: Browse catalog, search/filter products, manage cart, checkout with Stripe simulation, track orders, and leave verified reviews.
-- **Seller (Vendor)**: Onboard by creating a Store profile, list and manage products, track store analytics, and process buyer orders.
-- **Admin**: Platform oversight, monitor GMV and platform commission, moderate vendor stores, and manage user accounts.
-
-### 💰 Commission & Financial Model
-- **Platform Commission**: 5% on every completed product sale.
-- **Seller Earnings**: 95% of gross sales automatically calculated and recorded.
-- *(Note: Financial metrics are calculated and stored; real bank wire transfers are simulated for safety).*
-
-### 🚚 Order Delivery Lifecycle
-Every order moves through a strict status workflow:
-`Pending` ➔ `Paid` ➔ `Processing` ➔ `Packed` ➔ `Shipped` ➔ `Delivered` *(Optional: `Cancelled`, `Refunded`)*.
-
----
-
-## 🏗️ Architecture Overview
-
-```mermaid
-graph TD
-    Client[React.js Frontend Client] -->|HTTP REST Requests| Express[Node.js / Express Server]
-    Express -->|JWT Auth Middleware| Controllers[API Controllers]
-    Controllers -->|ODM Queries| Mongoose[Mongoose Models]
-    Mongoose -->|Storage| Mongo[(MongoDB Database)]
-    Controllers -->|Stripe SDK| Stripe[Stripe Payment Gateway]
-    Controllers -->|Media SDK| Cloudinary[Cloudinary Cloud Storage]
+```
+  Cart
+   ↓
+  Checkout
+   ↓
+  Backend creates Stripe PaymentIntent (`POST /api/orders/create-payment-intent`)
+   ↓
+  Stripe Card Payment
+   ↓
+  Backend verifies Stripe Payment (`POST /api/orders/verify-stripe-payment`)
+   ↓
+  Order marked Paid & PaymentResult saved
+   ↓
+  Stock reduced in Database (`$inc: { stock: -qty }`)
+   ↓
+  5% platform commission recorded (`$inc: { platformCommissionPaid }`)
+   ↓
+  95% seller earnings recorded (`$inc: { totalEarnings }`)
+   ↓
+  Cart cleared (`clearCart()`)
 ```
 
 ---
 
-## 🛠️ Technology Stack
+## 🔐 Demo Credentials Summary
 
-- **Frontend**: React 18, React Router DOM v6, Tailwind CSS, Axios.
-- **Backend**: Node.js, Express.js, JWT Authentication, Bcrypt.js, Helmet, Morgan, CORS.
-- **Database**: MongoDB & Mongoose ODM.
-- **Payment & Cloud**: Stripe API (Test Mode), Cloudinary.
-
----
-
-## 🔑 Demo Credentials (Auto-Fill Available on Login Page)
-
-| Role | Email | Password |
-| :--- | :--- | :--- |
-| **Buyer** | `buyer@example.com` | `password123` |
-| **Seller** | `seller@example.com` | `password123` |
-| **Admin** | `admin@example.com` | `password123` |
+| Role | Email | Password | Special Access Code |
+| :--- | :--- | :--- | :--- |
+| **Demo Buyer** | `buyer@example.com` | `password123` | N/A |
+| **Demo Vendor (Seller)** | `seller@example.com` | `password123` | Store: *Terra Cotta Studios* |
+| **Demo Admin** | `admin@example.com` | `password123` | Security Passcode: **`shop_@`** |
+| **Demo Door Delivery** | `delivery@example.com` | `password123` | Partner: *Sam Delivery Driver* |
 
 ---
 
-## 🚀 Quick Start & Installation Guide
+## 🛠️ Tech Stack & Setup Instructions
 
 ### Prerequisites
-- Node.js (v16.0 or higher)
-- npm or yarn
+- Node.js (v16+)
+- MongoDB (Local instance or MongoDB Atlas)
 
-### 1. Clone the repository
+### Server Setup
 ```bash
-git clone https://github.com/your-username/artisans-corner.git
-cd artisans-corner
-```
-
-### 2. Install Backend & Frontend Dependencies
-```bash
-# Install root & backend dependencies
+cd server
 npm install
-
-# Install client dependencies
-cd client
-npm install
-cd ..
-```
-
-### 3. Environment Configuration
-Create a `.env` file inside the `server/` directory:
-```env
-PORT=5000
-NODE_ENV=development
-MONGO_URI=mongodb://127.0.0.1:27017/artisans_corner
-JWT_SECRET=supersecretkey_artisans_corner_2026
-JWT_EXPIRES_IN=30d
-```
-
-### 4. Run Locally
-To run both backend API server and frontend client concurrently:
-```bash
+cp .env.example .env
 npm run dev
 ```
-- **Frontend App**: http://localhost:3000
-- **Backend API**: http://localhost:5000/api
-- **Health Check**: http://localhost:5000/health
+
+### Client Setup
+```bash
+cd client
+npm install
+cp .env.example .env
+npm run dev
+```
+
+The application will be live at `http://localhost:3000/`.
 
 ---
 
-## 📄 License
-Distributed under the MIT License. See `LICENSE` for details.
+## 📄 Audit Checklist Status
+- **Real Stripe PaymentIntent**: ✅ Implemented (`stripe.paymentIntents.create`)
+- **Stripe Payment Verification**: ✅ Implemented (`stripe.paymentIntents.retrieve`)
+- **Order Marked Paid**: ✅ Implemented
+- **Stock Reduced in Database**: ✅ Implemented (`Product.findByIdAndUpdate`)
+- **5% Platform Commission**: ✅ Implemented (`0.05 * total`)
+- **95% Seller Earnings**: ✅ Implemented (`0.95 * total`)
+- **Cart Cleared**: ✅ Implemented (`clearCart()`)
+- **Cloudinary Image Upload**: ✅ Implemented (`/api/upload`)
+- **Admin Passcode Security**: ✅ Implemented (`shop_@`)
+- **Database Schema ERD**: ✅ Documented in [`DATABASE_SCHEMA.md`](./DATABASE_SCHEMA.md)
