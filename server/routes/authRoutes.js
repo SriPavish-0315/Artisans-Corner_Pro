@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
 const {
-  sendSignupOtp,
-  verifySignupOtpAndRegister,
   registerUser,
+  verifyEmailOTP,
+  resendEmailOTP,
   loginUser,
   sendForgotPasswordOtp,
   verifyResetOtp,
@@ -13,18 +14,30 @@ const {
 } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
 
-// Signup with OTP verification
-router.post('/send-signup-otp', sendSignupOtp);
-router.post('/verify-signup-otp', verifySignupOtpAndRegister);
-router.post('/register', registerUser);
+// Server-side rate limiter for OTP endpoints
+const otpLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes window
+  max: 15, // Limit each IP to 15 requests per 15 mins
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many requests from this IP. Please try again after 15 minutes.'
+  }
+});
+
+// Registration & Email Verification OTP
+router.post('/register', otpLimiter, registerUser);
+router.post('/verify-email-otp', otpLimiter, verifyEmailOTP);
+router.post('/resend-email-otp', otpLimiter, resendEmailOTP);
 
 // Login
 router.post('/login', loginUser);
 
-// Forgot Password with OTP verification
-router.post('/forgot-password-otp', sendForgotPasswordOtp);
-router.post('/verify-reset-otp', verifyResetOtp);
-router.post('/reset-password', resetPasswordWithOtp);
+// Password Reset OTP
+router.post('/forgot-password-otp', otpLimiter, sendForgotPasswordOtp);
+router.post('/verify-reset-otp', otpLimiter, verifyResetOtp);
+router.post('/reset-password', otpLimiter, resetPasswordWithOtp);
 
 // User Profile
 router.get('/profile', protect, getUserProfile);

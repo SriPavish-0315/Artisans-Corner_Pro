@@ -19,6 +19,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import DeliveryDashboard from './pages/DeliveryDashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import VerifyEmail from './pages/VerifyEmail';
 import NotFound from './pages/NotFound';
 
 // Protected Route Wrapper requiring login
@@ -95,6 +96,7 @@ const App = () => {
                 {/* Public Auth Routes */}
                 <Route path="/login" element={<PublicAuthRoute><Login /></PublicAuthRoute>} />
                 <Route path="/register" element={<PublicAuthRoute><Register /></PublicAuthRoute>} />
+                <Route path="/verify-email" element={<VerifyEmail />} />
 
                 {/* Protected Marketplace Routes */}
                 <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />

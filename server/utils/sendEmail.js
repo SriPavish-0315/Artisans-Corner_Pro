@@ -1,15 +1,17 @@
 const nodemailer = require('nodemailer');
 
-// Utility helper to send SMTP emails directly to user inbox
+// Utility helper to send transactional emails via Nodemailer
 const sendEmail = async ({ email, subject, message, html }) => {
   try {
-    const smtpUser = process.env.SMTP_USER || process.env.EMAIL_USER;
-    const smtpPass = process.env.SMTP_PASS || process.env.EMAIL_PASS;
+    const smtpUser = process.env.EMAIL_USER || process.env.SMTP_USER;
+    const smtpPass = process.env.EMAIL_PASSWORD || process.env.SMTP_PASS;
+    const smtpHost = process.env.EMAIL_HOST || process.env.SMTP_HOST || 'smtp.gmail.com';
+    const smtpPort = Number(process.env.EMAIL_PORT || process.env.SMTP_PORT || 587);
 
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: process.env.SMTP_SECURE === 'true',
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
       auth: {
         user: smtpUser,
         pass: smtpPass
@@ -17,15 +19,22 @@ const sendEmail = async ({ email, subject, message, html }) => {
     });
 
     const mailOptions = {
-      from: `"${process.env.FROM_NAME || 'Artisan\'s Corner'}" <${process.env.FROM_EMAIL || smtpUser || 'no-reply@artisanscorner.com'}>`,
+      from: process.env.EMAIL_FROM || `"${process.env.FROM_NAME || 'Artisan\'s Corner'}" <${smtpUser || 'no-reply@artisanscorner.com'}>`,
       to: email,
       subject: subject,
       text: message,
-      html: html || `<div style="font-family: Arial, sans-serif; padding: 24px; border-radius: 16px; background-color: #fffbeb; border: 1px solid #fef3c7;">
-        <h2 style="color: #78350f; font-size: 20px; margin-bottom: 12px;">${subject}</h2>
-        <p style="color: #451a03; font-size: 14px; line-height: 1.6;">${message}</p>
-        <hr style="border: none; border-top: 1px solid #fde68a; margin: 20px 0;" />
-        <p style="color: #92400e; font-size: 11px;">Artisan's Corner Marketplace &copy; 2026. All rights reserved.</p>
+      html: html || `<div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif; border-radius: 20px; overflow: hidden; border: 1px solid #fef3c7; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
+        <div style="background-color: #78350f; padding: 28px; text-align: center;">
+          <h1 style="color: #ffffff; font-family: Georgia, serif; margin: 0; font-size: 26px; font-weight: bold;">Artisan's Corner</h1>
+          <p style="color: #fde68a; margin: 4px 0 0 0; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">Handmade Goods Marketplace</p>
+        </div>
+        <div style="padding: 32px 28px; background-color: #ffffff;">
+          <h2 style="color: #451a03; margin-top: 0; font-size: 20px; font-weight: bold;">${subject}</h2>
+          <p style="color: #451a03; font-size: 15px; line-height: 1.6;">${message}</p>
+        </div>
+        <div style="background-color: #fffbeb; padding: 20px; text-align: center; border-top: 1px solid #fef3c7;">
+          <p style="color: #92400e; font-size: 12px; margin: 0; font-weight: 500;">Regards,<br/><strong>Artisan's Corner Team</strong></p>
+        </div>
       </div>`
     };
 
@@ -37,8 +46,8 @@ const sendEmail = async ({ email, subject, message, html }) => {
       console.log(`\n==================================================`);
       console.log(`📧 [EMAIL DISPATCHED TO: ${email}]`);
       console.log(`SUBJECT: ${subject}`);
-      console.log(`MESSAGE CONTENT: ${message}`);
-      console.log(`💡 NOTE: Set SMTP_USER & SMTP_PASS in server/.env to send real emails to your Gmail inbox!`);
+      console.log(`MESSAGE CONTENT:\n${message}`);
+      console.log(`💡 NOTE: Set EMAIL_USER & EMAIL_PASSWORD in server/.env to send real emails to your Gmail inbox!`);
       console.log(`==================================================\n`);
       return { success: true, simulated: true };
     }
@@ -47,7 +56,7 @@ const sendEmail = async ({ email, subject, message, html }) => {
     console.log(`\n==================================================`);
     console.log(`📧 [FALLBACK EMAIL LOG FOR: ${email}]`);
     console.log(`SUBJECT: ${subject}`);
-    console.log(`CONTENT: ${message}`);
+    console.log(`CONTENT:\n${message}`);
     console.log(`==================================================\n`);
     return { success: false, error: error.message };
   }

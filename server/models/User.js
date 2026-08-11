@@ -24,6 +24,15 @@ const userSchema = new mongoose.Schema({
   store: { type: mongoose.Schema.Types.ObjectId, ref: 'Store' },
   addresses: [addressSchema],
   isActive: { type: Boolean, default: true },
+
+  // Email Verification OTP Fields
+  isEmailVerified: { type: Boolean, default: false },
+  emailVerificationOTP: { type: String, default: null }, // Hashed SHA256 string
+  emailVerificationOTPExpires: { type: Date, default: null },
+  emailVerificationAttempts: { type: Number, default: 0 },
+  lastOTPSentAt: { type: Date, default: null },
+
+  // Password Reset OTP Fields
   resetOtp: { type: String, default: null },
   resetOtpExpires: { type: Date, default: null }
 }, {
