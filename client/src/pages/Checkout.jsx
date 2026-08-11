@@ -314,22 +314,34 @@ const Checkout = () => {
 
       try {
         const token = localStorage.getItem('token');
-        const config = {
-          headers: { Authorization: `Bearer ${token}` }
-        };
+        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-        const response = await axios.post(
-          `${API_URL}/orders/create-payment-intent`,
-          {
-            amount: grandTotal,
-            currency: 'usd',
-            items: cartItems,
-            shippingAddress: address
-          },
-          config
-        );
+        let response;
+        try {
+          response = await axios.post(
+            `${API_URL}/orders/create-payment-intent`,
+            {
+              amount: grandTotal,
+              currency: 'usd',
+              items: cartItems,
+              shippingAddress: address
+            },
+            config
+          );
+        } catch (orderRouteErr) {
+          console.warn('Fallback to /payment/create-payment-intent');
+          response = await axios.post(
+            `${API_URL}/payment/create-payment-intent`,
+            {
+              amount: grandTotal,
+              currency: 'usd',
+              items: cartItems
+            },
+            config
+          );
+        }
 
-        if (isMounted && response.data && response.data.clientSecret) {
+        if (isMounted && response?.data && response.data.clientSecret) {
           setClientSecret(response.data.clientSecret);
           setPaymentIntentId(response.data.paymentIntentId);
         }
