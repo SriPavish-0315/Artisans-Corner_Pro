@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
+const sendEmail = require('../utils/sendEmail');
 
 // @desc    Register a new user
 // @route   POST /api/auth/register
@@ -25,15 +26,20 @@ const registerUser = async (req, res) => {
     });
 
     if (user) {
-      console.log(`📧 [EMAIL SENT] Signup welcome notification sent to user mail ID: ${user.email}`);
+      const subject = "🎉 Welcome to Artisan's Corner - Registration Successful";
+      const message = `Hello ${user.name}! Your ${user.role.toUpperCase()} account was registered successfully on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}. Welcome to our artisan marketplace!`;
+
+      // Dispatch email to user mail ID
+      sendEmail({ email: user.email, subject, message }).catch(err => console.error('Email error:', err.message));
+
       res.status(201).json({
         success: true,
         message: `User registered successfully! Confirmation email sent to ${user.email}.`,
         emailSent: true,
         emailDetails: {
           to: user.email,
-          subject: "🎉 Welcome to Artisan's Corner - Registration Successful",
-          body: `Hello ${user.name}! Your ${user.role.toUpperCase()} account was registered successfully on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}.`
+          subject,
+          body: message
         },
         data: {
           _id: user._id,
@@ -69,15 +75,20 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email }).populate('store');
 
     if (user && (await user.matchPassword(password))) {
-      console.log(`📧 [EMAIL SENT] Login security notification sent to user mail ID: ${user.email}`);
+      const subject = '🔐 Account Login Security Notification';
+      const message = `Hello ${user.name}! You successfully logged in to your Artisan's Corner ${user.role.toUpperCase()} account on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}. If this was not you, please reset your password.`;
+
+      // Dispatch email to user mail ID
+      sendEmail({ email: user.email, subject, message }).catch(err => console.error('Email error:', err.message));
+
       res.json({
         success: true,
         message: `Login successful! Security notification sent to ${user.email}.`,
         emailSent: true,
         emailDetails: {
           to: user.email,
-          subject: '🔐 Account Login Security Notification',
-          body: `Hello ${user.name}! You successfully logged in to your account on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}.`
+          subject,
+          body: message
         },
         data: {
           _id: user._id,
