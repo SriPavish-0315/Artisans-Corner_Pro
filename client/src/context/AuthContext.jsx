@@ -198,12 +198,21 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const { data } = await axios.post(`${API_URL}/auth/register`, { name, email, password, role, adminPasscode });
+      const { data } = await axios.post(`${API_URL}/auth/register`, { name, email, password, role, adminPasscode: passcode });
       if (data.success) {
         setUser(data.data);
         setToken(data.data.token);
         localStorage.setItem('token', data.data.token);
         localStorage.setItem('user', JSON.stringify(data.data));
+
+        triggerEmailNotification(
+          data.data.email,
+          '🎉 Welcome to Artisan\'s Corner! Signup Successful',
+          `Congratulations ${data.data.name}! Your Artisan's Corner ${data.data.role.toUpperCase()} account was registered successfully on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}. Confirmation email sent to your mail ID.`,
+          'signup'
+        );
+
+        return { success: true, message: data.message };
       }
     } catch (error) {
       console.log('API registration offline/failed, registering user in local database');

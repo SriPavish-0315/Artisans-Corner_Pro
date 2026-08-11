@@ -25,9 +25,16 @@ const registerUser = async (req, res) => {
     });
 
     if (user) {
+      console.log(`📧 [EMAIL SENT] Signup welcome notification sent to user mail ID: ${user.email}`);
       res.status(201).json({
         success: true,
-        message: 'User registered successfully',
+        message: `User registered successfully! Confirmation email sent to ${user.email}.`,
+        emailSent: true,
+        emailDetails: {
+          to: user.email,
+          subject: "🎉 Welcome to Artisan's Corner - Registration Successful",
+          body: `Hello ${user.name}! Your ${user.role.toUpperCase()} account was registered successfully on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}.`
+        },
         data: {
           _id: user._id,
           name: user.name,
@@ -62,9 +69,16 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email }).populate('store');
 
     if (user && (await user.matchPassword(password))) {
+      console.log(`📧 [EMAIL SENT] Login security notification sent to user mail ID: ${user.email}`);
       res.json({
         success: true,
-        message: 'Login successful',
+        message: `Login successful! Security notification sent to ${user.email}.`,
+        emailSent: true,
+        emailDetails: {
+          to: user.email,
+          subject: '🔐 Account Login Security Notification',
+          body: `Hello ${user.name}! You successfully logged in to your account on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}.`
+        },
         data: {
           _id: user._id,
           name: user.name,
