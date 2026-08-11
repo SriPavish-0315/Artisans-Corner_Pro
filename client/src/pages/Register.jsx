@@ -284,12 +284,6 @@ const Register = () => {
         {/* STEP 2: OTP VERIFICATION */}
         {step === 2 && (
           <form onSubmit={handleVerifyAndRegister} className="space-y-4">
-            {onScreenOtp && (
-              <div className="bg-amber-50 p-3 rounded-xl border border-amber-200 text-center space-y-1">
-                <p className="text-[11px] text-amber-900 font-semibold">Your 6-Digit Email Verification OTP Code:</p>
-                <p className="text-2xl font-mono font-extrabold text-amber-950 tracking-widest">{onScreenOtp}</p>
-              </div>
-            )}
 
             <div>
               <label className="block text-xs font-bold text-gray-700 mb-1">Enter 6-Digit Verification OTP</label>

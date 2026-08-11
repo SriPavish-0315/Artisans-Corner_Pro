@@ -45,9 +45,8 @@ const sendSignupOtp = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `Verification OTP sent to ${cleanEmail}. Please enter the code to complete registration.`,
-      email: cleanEmail,
-      otp // Included for on-screen notification display
+      message: `Verification OTP sent to ${cleanEmail}. Please check your email inbox to get your 6-digit code.`,
+      email: cleanEmail
     });
   } catch (error) {
     res.status(500).json({
@@ -261,9 +260,8 @@ const sendForgotPasswordOtp = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `Password reset OTP sent to ${cleanEmail}. Please check your email inbox.`,
-      email: cleanEmail,
-      otp // Included for on-screen notification display
+      message: `Password reset OTP sent to ${cleanEmail}. Please check your email inbox to get your 6-digit code.`,
+      email: cleanEmail
     });
   } catch (error) {
     res.status(500).json({
