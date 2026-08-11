@@ -18,14 +18,51 @@ const ProductDetails = () => {
   const [reviews, setReviews] = useState([]);
   const [added, setAdded] = useState(false);
 
-  // Review Form State
+  // Review Form State & Verified Buyer Checks
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
   const [reviewMsg, setReviewMsg] = useState('');
+  const [reviewErr, setReviewErr] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [isVerifiedBuyer, setIsVerifiedBuyer] = useState(false);
+  const [checkingPurchased, setCheckingPurchased] = useState(true);
 
   useEffect(() => {
     fetchProductDetails();
   }, [id]);
+
+  useEffect(() => {
+    const checkIfUserPurchased = async () => {
+      if (!user) {
+        setIsVerifiedBuyer(false);
+        setCheckingPurchased(false);
+        return;
+      }
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setIsVerifiedBuyer(false);
+          setCheckingPurchased(false);
+          return;
+        }
+        const { data } = await axios.get(`${API_URL}/orders/myorders`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (data.success && data.data) {
+          const purchased = data.data.some(order => 
+            order.orderItems?.some(item => String(item.product?._id || item.product) === String(id))
+          );
+          setIsVerifiedBuyer(purchased);
+        }
+      } catch (err) {
+        setIsVerifiedBuyer(false);
+      } finally {
+        setCheckingPurchased(false);
+      }
+    };
+
+    checkIfUserPurchased();
+  }, [id, user]);
 
   const fetchProductDetails = async () => {
     try {
@@ -34,7 +71,6 @@ const ProductDetails = () => {
         setProduct(data.data);
         setSelectedImg(data.data.thumbnail || (data.data.images && data.data.images[0]));
         
-        // Fetch reviews directly from MongoDB review endpoint
         try {
           const revRes = await axios.get(`${API_URL}/reviews/product/${id}`);
           if (revRes.data.success && revRes.data.data) {
@@ -51,7 +87,6 @@ const ProductDetails = () => {
       console.log('API call failed or running in demo mode. Falling back to local MOCK_CATALOG for id:', id);
     }
 
-    // Dynamic catalog lookup matching the clicked product ID
     const found = MOCK_CATALOG.find(p => String(p._id) === String(id) || String(p.id) === String(id)) || MOCK_CATALOG[0];
 
     const mockItem = {
@@ -102,10 +137,15 @@ const ProductDetails = () => {
 
   const handleAddReview = async (e) => {
     e.preventDefault();
+    setReviewMsg('');
+    setReviewErr('');
+
     if (!user) {
-      alert('Please log in to submit a review.');
+      setReviewErr('Please log in to submit a review.');
       return;
     }
+
+    setSubmittingReview(true);
 
     try {
       const config = {
@@ -118,22 +158,16 @@ const ProductDetails = () => {
       }, config);
 
       if (data.success) {
-        setReviewMsg('Review added successfully!');
+        setReviewMsg('Review added successfully! Thank you for your feedback.');
         setReviews([data.data, ...reviews]);
         setComment('');
+        setIsVerifiedBuyer(true);
       }
     } catch (error) {
-      // Demo mode review add
-      const newRev = {
-        _id: 'r_' + Date.now(),
-        name: user.name,
-        rating,
-        comment,
-        createdAt: new Date().toISOString().split('T')[0]
-      };
-      setReviews([newRev, ...reviews]);
-      setReviewMsg('Review submitted (Demo Mode)!');
-      setComment('');
+      const errMsg = error.response?.data?.message || 'Only verified buyers who purchased this product can leave a review.';
+      setReviewErr(errMsg);
+    } finally {
+      setSubmittingReview(false);
     }
   };
 
@@ -240,7 +274,7 @@ const ProductDetails = () => {
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <button
                 onClick={handleAddToCart}
-                className={`flex-1 py-4 rounded-2xl font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 ${
+                className={`flex-1 py-4 rounded-2xl font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer ${
                   added ? 'bg-green-600 text-white' : 'bg-amber-800 hover:bg-amber-900 text-white'
                 }`}
               >
@@ -250,7 +284,7 @@ const ProductDetails = () => {
 
               <button
                 onClick={handleBuyNow}
-                className="px-8 py-4 rounded-2xl font-bold text-sm bg-amber-500 hover:bg-amber-400 text-amber-950 shadow-md transition-all"
+                className="px-8 py-4 rounded-2xl font-bold text-sm bg-amber-500 hover:bg-amber-400 text-amber-950 shadow-md transition-all cursor-pointer"
               >
                 Buy Now
               </button>
@@ -288,10 +322,59 @@ const ProductDetails = () => {
           </div>
         </div>
 
+        {/* Verified Buyer Status Banner */}
+        {!user ? (
+          <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200 flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2 text-amber-900 font-bold">
+              <i className="fa-solid fa-lock text-amber-700 text-base"></i>
+              <span>Logged-in Account Required to Write a Customer Review</span>
+            </div>
+            <Link to="/login" className="px-4 py-2 bg-amber-800 text-white font-bold rounded-xl hover:bg-amber-900">
+              Log In to Review
+            </Link>
+          </div>
+        ) : isVerifiedBuyer ? (
+          <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-200 flex items-center gap-2 text-xs text-emerald-900 font-bold">
+            <i className="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+            <span>✓ Verified Buyer Badge Authorized — You purchased this craft item!</span>
+          </div>
+        ) : (
+          <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200 flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2.5 text-amber-950 font-bold">
+              <i className="fa-solid fa-shield-halved text-amber-800 text-lg"></i>
+              <div>
+                <p className="font-extrabold text-amber-950">🔒 Verified Buyer Review Restriction Active</p>
+                <p className="text-[11px] text-amber-800 font-normal mt-0.5">
+                  Only customers who have purchased this craft product can post a customer review.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={handleBuyNow}
+              className="px-4 py-2 bg-amber-800 text-white font-bold rounded-xl hover:bg-amber-900 cursor-pointer"
+            >
+              Order Item to Unlock Review
+            </button>
+          </div>
+        )}
+
         {/* Add Review Form */}
         <div className="bg-amber-50/50 p-6 rounded-2xl border border-amber-100 space-y-4">
           <h3 className="font-bold text-gray-900 text-sm">Write a Customer Review</h3>
-          {reviewMsg && <p className="text-xs font-bold text-green-700">{reviewMsg}</p>}
+          
+          {reviewMsg && (
+            <div className="p-3 bg-emerald-50 text-emerald-800 rounded-xl text-xs font-bold border border-emerald-200">
+              {reviewMsg}
+            </div>
+          )}
+
+          {reviewErr && (
+            <div className="p-3 bg-red-50 text-red-700 rounded-xl text-xs font-bold border border-red-200">
+              {reviewErr}
+            </div>
+          )}
+
           <form onSubmit={handleAddReview} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-1">Select Rating:</label>
@@ -321,9 +404,10 @@ const ProductDetails = () => {
 
             <button
               type="submit"
-              className="px-6 py-2.5 bg-amber-800 text-white font-bold text-xs rounded-xl hover:bg-amber-900 transition-colors"
+              disabled={submittingReview}
+              className="px-6 py-2.5 bg-amber-800 text-white font-bold text-xs rounded-xl hover:bg-amber-900 transition-colors cursor-pointer"
             >
-              Submit Verified Review
+              {submittingReview ? 'Submitting Review...' : 'Submit Verified Review'}
             </button>
           </form>
         </div>
@@ -333,8 +417,8 @@ const ProductDetails = () => {
           {reviews.map((rev, i) => (
             <div key={i} className="p-4 rounded-2xl bg-gray-50 border border-gray-100 space-y-2">
               <div className="flex justify-between items-center">
-                <span className="font-bold text-sm text-gray-900">{rev.name}</span>
-                <span className="text-xs text-gray-400">{rev.createdAt}</span>
+                <span className="font-bold text-sm text-gray-900">{rev.name || rev.user?.name}</span>
+                <span className="text-xs text-gray-400">{rev.createdAt ? new Date(rev.createdAt).toLocaleDateString() : 'Recent'}</span>
               </div>
               <div className="flex text-amber-500 text-xs">
                 {[...Array(5)].map((_, r) => (
