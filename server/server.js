@@ -44,6 +44,7 @@ const clientUrlClean = process.env.CLIENT_URL ? process.env.CLIENT_URL.trim().re
 const allowedOrigins = [
   clientUrlClean,
   clientUrlClean ? `${clientUrlClean}/` : null,
+  'https://artisans-corner-web.vercel.app',
   'https://artisans-corner-pro.vercel.app',
   'https://artisans-corner-project-d55v.vercel.app',
   'http://localhost:3000',
