@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-// Utility helper to send actual SMTP emails to user inbox
+// Utility helper to send SMTP emails directly to user inbox
 const sendEmail = async ({ email, subject, message, html }) => {
   try {
     const smtpUser = process.env.SMTP_USER || process.env.EMAIL_USER;
@@ -31,14 +31,24 @@ const sendEmail = async ({ email, subject, message, html }) => {
 
     if (smtpUser && smtpPass) {
       const info = await transporter.sendMail(mailOptions);
-      console.log(`📧 [REAL EMAIL DELIVERED] Message ID: ${info.messageId} to ${email}`);
+      console.log(`📧 [REAL EMAIL DELIVERED TO INBOX] Message ID: ${info.messageId} to ${email}`);
       return { success: true, messageId: info.messageId };
     } else {
-      console.log(`📧 [EMAIL READY] Set SMTP_USER & SMTP_PASS in server/.env or Render env settings to deliver directly to real Gmail inbox: ${email}`);
+      console.log(`\n==================================================`);
+      console.log(`📧 [EMAIL DISPATCHED TO: ${email}]`);
+      console.log(`SUBJECT: ${subject}`);
+      console.log(`MESSAGE CONTENT: ${message}`);
+      console.log(`💡 NOTE: Set SMTP_USER & SMTP_PASS in server/.env to send real emails to your Gmail inbox!`);
+      console.log(`==================================================\n`);
       return { success: true, simulated: true };
     }
   } catch (error) {
-    console.error('Error delivering email:', error.message);
+    console.error('Error delivering email via Nodemailer:', error.message);
+    console.log(`\n==================================================`);
+    console.log(`📧 [FALLBACK EMAIL LOG FOR: ${email}]`);
+    console.log(`SUBJECT: ${subject}`);
+    console.log(`CONTENT: ${message}`);
+    console.log(`==================================================\n`);
     return { success: false, error: error.message };
   }
 };

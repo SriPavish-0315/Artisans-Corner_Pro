@@ -41,6 +41,11 @@ const sendSignupOtp = async (req, res) => {
     const subject = `🔑 Signup Email Verification OTP: ${otp}`;
     const message = `Hello ${name}! Your 6-digit email verification OTP for Artisan's Corner is ${otp}. Enter this code on the registration page to complete your signup. Valid for 10 minutes.`;
 
+    console.log('\n==================================================');
+    console.log(`📧 [SIGNUP EMAIL OTP SENT TO MAIL ID]: ${cleanEmail}`);
+    console.log(`VERIFICATION OTP CODE: ${otp}`);
+    console.log('==================================================\n');
+
     sendEmail({ email: cleanEmail, subject, message }).catch(err => console.error('Email error:', err.message));
 
     return res.status(200).json({
@@ -255,6 +260,11 @@ const sendForgotPasswordOtp = async (req, res) => {
 
     const subject = `🔐 Password Reset Request - Your OTP is ${otp}`;
     const message = `Hello ${user.name}! Your 6-digit password reset OTP for Artisan's Corner is ${otp}. Use this code to reset your account password. Valid for 10 minutes.`;
+
+    console.log('\n==================================================');
+    console.log(`📧 [RESET PASSWORD EMAIL OTP SENT TO MAIL ID]: ${cleanEmail}`);
+    console.log(`VERIFICATION OTP CODE: ${otp}`);
+    console.log('==================================================\n');
 
     sendEmail({ email: cleanEmail, subject, message }).catch(err => console.error('Email error:', err.message));
 
