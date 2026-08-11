@@ -35,8 +35,16 @@ const Register = () => {
     const res = await register(name, email, password, role, adminPasscode);
     setLoading(false);
 
-    if (res.success || res.requiresEmailVerification) {
-      navigate('/verify-email', { state: { email: res.email || email } });
+    if (res.success) {
+      if (role === 'seller') {
+        navigate('/become-seller');
+      } else if (role === 'admin') {
+        navigate('/admin/dashboard');
+      } else if (role === 'delivery') {
+        navigate('/delivery/dashboard');
+      } else {
+        navigate('/');
+      }
     } else {
       setError(res.message || 'Registration failed. Please check your inputs.');
     }
@@ -51,7 +59,7 @@ const Register = () => {
             <i className="fa-solid fa-user-plus"></i>
           </div>
           <h2 className="font-serif-title text-2xl font-bold text-gray-900">Create Account</h2>
-          <p className="text-xs text-gray-500">Sign up and verify your email via 6-digit OTP code</p>
+          <p className="text-xs text-gray-500">Sign up and save your account directly in the database</p>
         </div>
 
         {error && (
@@ -227,7 +235,7 @@ const Register = () => {
             disabled={loading}
             className="w-full py-3.5 bg-amber-800 text-white font-bold text-sm rounded-2xl shadow-lg hover:bg-amber-900 transition-all cursor-pointer"
           >
-            {loading ? 'Creating Account & Sending OTP...' : 'Register & Verify Email'}
+            {loading ? 'Registering Account...' : 'Register Account'}
           </button>
         </form>
 

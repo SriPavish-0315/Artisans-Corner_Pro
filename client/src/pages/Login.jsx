@@ -52,8 +52,6 @@ const Login = () => {
       } else {
         navigate('/');
       }
-    } else if (res.requiresEmailVerification) {
-      navigate('/verify-email', { state: { email: res.email || email } });
     } else {
       setError(res.message);
     }

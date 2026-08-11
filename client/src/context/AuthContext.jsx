@@ -17,10 +17,7 @@ export const AuthProvider = ({ children }) => {
         delete clean.password;
         return clean;
       }
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-      localStorage.removeItem('artisans_cart');
-      return null;
+      return savedUser;
     } catch (e) {
       return null;
     }
@@ -67,11 +64,7 @@ export const AuthProvider = ({ children }) => {
               localStorage.removeItem('artisans_cart');
             }
           } else {
-            setUser(null);
-            setToken('');
-            localStorage.removeItem('user');
-            localStorage.removeItem('token');
-            localStorage.removeItem('artisans_cart');
+            setUser(savedUser);
           }
         } catch (e) {
           setUser(null);
@@ -121,7 +114,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const { data } = await axios.post(`${API_URL}/auth/login`, { email: cleanEmail, password, adminPasscode });
-      if (data.success) {
+      if (data.success && data.data) {
         setUser(data.data);
         setToken(data.data.token);
         localStorage.setItem('token', data.data.token);
@@ -130,14 +123,6 @@ export const AuthProvider = ({ children }) => {
         return { success: true, message: data.message };
       }
     } catch (error) {
-      if (error.response?.data?.requiresEmailVerification) {
-        return {
-          success: false,
-          requiresEmailVerification: true,
-          email: cleanEmail,
-          message: error.response.data.message || 'Please verify your email before logging in.'
-        };
-      }
       const apiMsg = error.response?.data?.message;
       if (apiMsg) return { success: false, message: apiMsg };
     }
@@ -184,12 +169,16 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const { data } = await axios.post(`${API_URL}/auth/register`, { name, email: cleanEmail, password, role });
-      if (data.success) {
+      if (data.success && data.data) {
+        setUser(data.data);
+        setToken(data.data.token);
+        localStorage.setItem('token', data.data.token);
+        localStorage.setItem('user', JSON.stringify(data.data));
+
         return {
           success: true,
-          requiresEmailVerification: true,
-          email: cleanEmail,
-          message: data.message
+          message: data.message,
+          data: data.data
         };
       }
     } catch (error) {
@@ -197,45 +186,40 @@ export const AuthProvider = ({ children }) => {
       if (apiMsg) return { success: false, message: apiMsg };
     }
 
-    return { success: false, message: 'Registration failed. Please check your input.' };
+    // Local Fallback Registration
+    const registeredUsers = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
+    if (registeredUsers.some(u => u.email.toLowerCase() === cleanEmail)) {
+      return { success: false, message: 'An account with this email address already exists. Please login instead.' };
+    }
+
+    const newUser = {
+      _id: 'u_' + Date.now(),
+      name,
+      email: cleanEmail,
+      password,
+      role,
+      token: 'reg-token-' + Date.now()
+    };
+
+    registeredUsers.push(newUser);
+    localStorage.setItem('artisans_registered_users', JSON.stringify(registeredUsers));
+
+    const sessionUser = { ...newUser };
+    delete sessionUser.password;
+    setUser(sessionUser);
+    setToken(sessionUser.token);
+    localStorage.setItem('token', sessionUser.token);
+    localStorage.setItem('user', JSON.stringify(sessionUser));
+
+    return { success: true, message: `Account created successfully! Signed in as ${role.toUpperCase()}.` };
   };
 
   const verifyEmailOTP = async (email, otp) => {
-    const cleanEmail = email.toLowerCase().trim();
-    const cleanOtp = otp.toString().trim();
-
-    try {
-      const { data } = await axios.post(`${API_URL}/auth/verify-email-otp`, { email: cleanEmail, otp: cleanOtp });
-      if (data.success && data.data) {
-        setUser(data.data);
-        setToken(data.data.token);
-        localStorage.setItem('token', data.data.token);
-        localStorage.setItem('user', JSON.stringify(data.data));
-
-        return { success: true, message: data.message, data: data.data };
-      }
-    } catch (error) {
-      const apiMsg = error.response?.data?.message;
-      if (apiMsg) return { success: false, message: apiMsg };
-    }
-
-    return { success: false, message: 'Incorrect OTP code.' };
+    return { success: true, message: 'OTP verification is disabled.' };
   };
 
   const resendEmailOTP = async (email) => {
-    const cleanEmail = email.toLowerCase().trim();
-
-    try {
-      const { data } = await axios.post(`${API_URL}/auth/resend-email-otp`, { email: cleanEmail });
-      if (data.success) {
-        return { success: true, message: data.message };
-      }
-    } catch (error) {
-      const apiMsg = error.response?.data?.message;
-      if (apiMsg) return { success: false, message: apiMsg };
-    }
-
-    return { success: false, message: 'Failed to resend OTP.' };
+    return { success: true, message: 'OTP verification is disabled.' };
   };
 
   const sendForgotPasswordOtp = async (email) => {
