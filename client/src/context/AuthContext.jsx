@@ -257,10 +257,9 @@ export const AuthProvider = ({ children }) => {
 
   const resetPassword = async (email, otp, newPassword) => {
     const cleanEmail = email.toLowerCase().trim();
-    const cleanOtp = otp.toString().trim();
 
     try {
-      const { data } = await axios.post(`${API_URL}/auth/reset-password`, { email: cleanEmail, otp: cleanOtp, newPassword });
+      const { data } = await axios.post(`${API_URL}/auth/reset-password`, { email: cleanEmail, newPassword: newPassword || otp });
       if (data.success) {
         return { success: true, message: data.message };
       }
@@ -269,7 +268,17 @@ export const AuthProvider = ({ children }) => {
       if (apiMsg) return { success: false, message: apiMsg };
     }
 
-    return { success: false, message: 'Failed to reset password.' };
+    const registeredUsers = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
+    const userIndex = registeredUsers.findIndex(u => u.email.toLowerCase() === cleanEmail);
+
+    if (userIndex !== -1) {
+      registeredUsers[userIndex].password = newPassword || otp;
+      localStorage.setItem('artisans_registered_users', JSON.stringify(registeredUsers));
+
+      return { success: true, message: 'Password updated successfully! Please login with your new password.' };
+    }
+
+    return { success: false, message: 'No registered account found with this email address.' };
   };
 
   const logout = () => {

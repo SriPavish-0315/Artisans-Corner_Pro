@@ -210,7 +210,7 @@ const verifyResetOtp = async (req, res) => {
 // @access  Public
 const resetPasswordWithOtp = async (req, res) => {
   try {
-    const { email, otp, newPassword } = req.body;
+    const { email, newPassword } = req.body;
     const cleanEmail = email.toLowerCase().trim();
 
     const user = await User.findOne({ email: cleanEmail });
@@ -218,23 +218,7 @@ const resetPasswordWithOtp = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'User account not found'
-      });
-    }
-
-    const hashedSubmit = crypto.createHash('sha256').update(otp.toString().trim()).digest('hex');
-
-    if (!user.resetOtp || user.resetOtp !== hashedSubmit) {
-      return res.status(400).json({
-        success: false,
-        message: 'Incorrect OTP code! Please verify your OTP again.'
-      });
-    }
-
-    if (new Date(user.resetOtpExpires) < new Date()) {
-      return res.status(400).json({
-        success: false,
-        message: 'OTP has expired! Please request a new OTP.'
+        message: 'No registered account found with this email address. Please check your email or sign up.'
       });
     }
 

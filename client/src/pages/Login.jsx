@@ -12,19 +12,16 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Forgot Password Modal State
+  // Forgot Password Modal State (Direct Reset, No OTP)
   const [showForgotModal, setShowForgotModal] = useState(false);
-  const [forgotStep, setForgotStep] = useState(1); // 1: Email, 2: OTP, 3: New Password
   const [forgotEmail, setForgotEmail] = useState('');
-  const [otpCode, setOtpCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [forgotError, setForgotError] = useState('');
   const [forgotSuccess, setForgotSuccess] = useState('');
   const [forgotLoading, setForgotLoading] = useState(false);
-  const [onScreenOtp, setOnScreenOtp] = useState('');
 
-  const { login, sendForgotPasswordOtp, verifyResetOtp, resetPassword } = useAuth();
+  const { login, resetPassword } = useAuth();
   const navigate = useNavigate();
 
   const isAdminMode = selectedRole === 'admin' || email.toLowerCase().includes('admin');
@@ -57,54 +54,19 @@ const Login = () => {
     }
   };
 
-  // Forgot Password Handlers
-  const handleSendForgotOtp = async (e) => {
-    if (e) e.preventDefault();
-    setForgotError('');
-    setForgotSuccess('');
-    setForgotLoading(true);
-
-    const res = await sendForgotPasswordOtp(forgotEmail);
-    setForgotLoading(false);
-
-    if (res.success) {
-      setForgotSuccess(res.message);
-      if (res.otp) setOnScreenOtp(res.otp);
-      setForgotStep(2);
-    } else {
-      setForgotError(res.message);
-    }
-  };
-
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-    setForgotError('');
-    setForgotSuccess('');
-
-    if (!otpCode || otpCode.trim().length !== 6) {
-      setForgotError('Please enter the full 6-digit OTP code sent to your email.');
-      return;
-    }
-
-    setForgotLoading(true);
-    const res = await verifyResetOtp(forgotEmail, otpCode);
-    setForgotLoading(false);
-
-    if (res.success) {
-      setForgotSuccess(res.message);
-      setForgotStep(3);
-    } else {
-      setForgotError(res.message || 'Wrong OTP code! Please enter the correct code or click Resend OTP.');
-    }
-  };
-
+  // Direct Password Reset Handler (OTP Disabled)
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setForgotError('');
     setForgotSuccess('');
 
+    if (!forgotEmail) {
+      setForgotError('Please enter your registered email address.');
+      return;
+    }
+
     if (newPassword.length < 6) {
-      setForgotError('Password must be at least 6 characters long.');
+      setForgotError('New password must be at least 6 characters long.');
       return;
     }
 
@@ -114,19 +76,22 @@ const Login = () => {
     }
 
     setForgotLoading(true);
-    const res = await resetPassword(forgotEmail, otpCode, newPassword);
+    const res = await resetPassword(forgotEmail, '', newPassword);
     setForgotLoading(false);
 
     if (res.success) {
-      setForgotSuccess(res.message);
+      setForgotSuccess('Password updated successfully! You can now log in with your new password.');
+      setEmail(forgotEmail);
+      setPassword(newPassword);
       setTimeout(() => {
         setShowForgotModal(false);
-        setForgotStep(1);
-        setEmail(forgotEmail);
-        setPassword('');
-      }, 2500);
+        setForgotEmail('');
+        setNewPassword('');
+        setConfirmPassword('');
+        setForgotSuccess('');
+      }, 2000);
     } else {
-      setForgotError(res.message);
+      setForgotError(res.message || 'Failed to reset password. Please check your email address.');
     }
   };
 
@@ -169,12 +134,13 @@ const Login = () => {
                 type="button"
                 onClick={() => {
                   setShowForgotModal(true);
-                  setForgotStep(1);
                   setForgotEmail(email);
+                  setNewPassword('');
+                  setConfirmPassword('');
                   setForgotError('');
                   setForgotSuccess('');
                 }}
-                className="text-xs font-bold text-amber-800 hover:underline"
+                className="text-xs font-bold text-amber-800 hover:underline cursor-pointer"
               >
                 Forgot Password?
               </button>
@@ -191,7 +157,7 @@ const Login = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 text-gray-500 hover:text-amber-900 text-sm focus:outline-none transition-colors"
+                className="absolute right-3 text-gray-500 hover:text-amber-900 text-sm focus:outline-none transition-colors cursor-pointer"
                 title={showPassword ? 'Hide Password' : 'Show Password'}
               >
                 <i className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
@@ -221,7 +187,7 @@ const Login = () => {
                 <button
                   type="button"
                   onClick={() => setShowAdminPasscode(!showAdminPasscode)}
-                  className="absolute right-3 text-purple-700 hover:text-purple-950 text-sm focus:outline-none transition-colors font-bold"
+                  className="absolute right-3 text-purple-700 hover:text-purple-950 text-sm focus:outline-none transition-colors font-bold cursor-pointer"
                   title={showAdminPasscode ? 'Hide Passcode' : 'Show Passcode'}
                 >
                   <i className={`fa-solid ${showAdminPasscode ? 'fa-eye-slash' : 'fa-eye'}`}></i>
@@ -305,7 +271,7 @@ const Login = () => {
 
       </div>
 
-      {/* FORGOT PASSWORD OTP MODAL */}
+      {/* DIRECT FORGOT PASSWORD RESET MODAL (NO OTP) */}
       {showForgotModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border border-amber-100 shadow-2xl space-y-5 relative animate-fadeIn">
@@ -313,7 +279,7 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setShowForgotModal(false)}
-              className="absolute top-5 right-5 text-gray-400 hover:text-gray-700 text-lg w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center transition-colors"
+              className="absolute top-5 right-5 text-gray-400 hover:text-gray-700 text-lg w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center transition-colors cursor-pointer"
             >
               <i className="fa-solid fa-xmark"></i>
             </button>
@@ -324,9 +290,7 @@ const Login = () => {
               </div>
               <h3 className="font-serif-title text-xl font-bold text-gray-900">Reset Your Password</h3>
               <p className="text-xs text-gray-500">
-                {forgotStep === 1 && 'Enter your registered email ID to receive a 6-digit OTP verification code.'}
-                {forgotStep === 2 && `Enter the 6-digit OTP code sent to ${forgotEmail}.`}
-                {forgotStep === 3 && 'Create a new password for your Artisan\'s Corner account.'}
+                Enter your registered email ID and your new password to reset your account credentials directly.
               </p>
             </div>
 
@@ -342,105 +306,51 @@ const Login = () => {
               </div>
             )}
 
-            {/* STEP 1: VERIFY EMAIL */}
-            {forgotStep === 1 && (
-              <form onSubmit={handleSendForgotOtp} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Registered Email ID</label>
-                  <input
-                    type="email"
-                    required
-                    value={forgotEmail}
-                    onChange={(e) => setForgotEmail(e.target.value)}
-                    placeholder="name@example.com"
-                    className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
-                  />
-                </div>
+            <form onSubmit={handleResetPassword} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Registered Email ID</label>
+                <input
+                  type="email"
+                  required
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
+                />
+              </div>
 
-                <button
-                  type="submit"
-                  disabled={forgotLoading}
-                  className="w-full py-3.5 bg-amber-800 text-white font-bold text-sm rounded-2xl shadow-lg hover:bg-amber-900 transition-all cursor-pointer"
-                >
-                  {forgotLoading ? 'Sending OTP to Email...' : 'Send OTP Code to Email'}
-                </button>
-              </form>
-            )}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">New Password</label>
+                <input
+                  type="password"
+                  required
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Minimum 6 characters"
+                  className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
+                />
+              </div>
 
-            {/* STEP 2: VERIFY OTP */}
-            {forgotStep === 2 && (
-              <form onSubmit={handleVerifyOtp} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Confirm New Password</label>
+                <input
+                  type="password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Re-enter new password"
+                  className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
+                />
+              </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Enter 6-Digit OTP</label>
-                  <input
-                    type="text"
-                    required
-                    maxLength={6}
-                    value={otpCode}
-                    onChange={(e) => setOtpCode(e.target.value)}
-                    placeholder="123456"
-                    className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-center font-mono text-xl tracking-widest font-extrabold focus:outline-none focus:ring-2 focus:ring-amber-800"
-                  />
-                </div>
-
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={handleSendForgotOtp}
-                    disabled={forgotLoading}
-                    className="w-1/3 py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs rounded-xl transition-all"
-                  >
-                    Resend OTP
-                  </button>
-
-                  <button
-                    type="submit"
-                    disabled={forgotLoading}
-                    className="w-2/3 py-3 bg-amber-800 text-white font-bold text-xs rounded-xl shadow-md hover:bg-amber-900 transition-all cursor-pointer"
-                  >
-                    {forgotLoading ? 'Verifying OTP...' : 'Verify OTP Code'}
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {/* STEP 3: NEW PASSWORD */}
-            {forgotStep === 3 && (
-              <form onSubmit={handleResetPassword} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">New Password</label>
-                  <input
-                    type="password"
-                    required
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="Minimum 6 characters"
-                    className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Confirm New Password</label>
-                  <input
-                    type="password"
-                    required
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Re-enter new password"
-                    className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={forgotLoading}
-                  className="w-full py-3.5 bg-emerald-800 text-white font-bold text-sm rounded-2xl shadow-lg hover:bg-emerald-900 transition-all cursor-pointer"
-                >
-                  {forgotLoading ? 'Updating Password...' : 'Save New Password & Login'}
-                </button>
-              </form>
-            )}
+              <button
+                type="submit"
+                disabled={forgotLoading}
+                className="w-full py-3.5 bg-emerald-800 text-white font-bold text-sm rounded-2xl shadow-lg hover:bg-emerald-900 transition-all cursor-pointer"
+              >
+                {forgotLoading ? 'Updating Password...' : 'Reset & Save New Password'}
+              </button>
+            </form>
 
           </div>
         </div>
