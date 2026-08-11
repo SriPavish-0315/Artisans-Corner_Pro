@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }) => {
         delete clean.password;
         return clean;
       }
-      // If not in registered database, clear storage
       localStorage.removeItem('user');
       localStorage.removeItem('token');
       localStorage.removeItem('artisans_cart');
@@ -106,7 +105,7 @@ export const AuthProvider = ({ children }) => {
     setEmailNotification(notifObj);
     setTimeout(() => {
       setEmailNotification(null);
-    }, 12000);
+    }, 15000);
   };
 
   const login = async (email, password, adminPasscode = '') => {
@@ -182,23 +181,62 @@ export const AuthProvider = ({ children }) => {
     };
   };
 
-  const register = async (name, email, password, role = 'buyer', passcode = '') => {
-    if (role === 'admin' && passcode !== 'shop_@') {
-      return { 
-        success: false, 
-        message: 'Invalid Admin Security Code! The admin code shop_@ is required.' 
-      };
-    }
+  // OTP Signup Methods
+  const sendSignupOtp = async (name, email, password, role = 'buyer', passcode = '') => {
+    const cleanEmail = email.toLowerCase().trim();
 
+    if (role === 'admin' && passcode !== 'shop_@') {
+      return { success: false, message: 'Invalid Admin Security Code! shop_@ is required.' };
+    }
     if (role === 'delivery' && passcode !== 'delivery_@') {
-      return {
-        success: false,
-        message: 'Invalid Admin Delivery Passcode! You must enter the Admin Delivery Passcode (delivery_@) assigned by Admin to create a Door Delivery Partner account.'
-      };
+      return { success: false, message: 'Invalid Admin Delivery Passcode! delivery_@ is required.' };
     }
 
     try {
-      const { data } = await axios.post(`${API_URL}/auth/register`, { name, email, password, role, adminPasscode: passcode });
+      const { data } = await axios.post(`${API_URL}/auth/send-signup-otp`, { name, email: cleanEmail, password, role });
+      if (data.success) {
+        if (data.otp) {
+          triggerEmailNotification(
+            cleanEmail,
+            '🔑 Signup Verification OTP Code',
+            `Hello ${name}! Your 6-digit email verification OTP for Artisan's Corner is ${data.otp}. Valid for 10 minutes.`,
+            'info'
+          );
+        }
+        return { success: true, message: data.message, otp: data.otp };
+      }
+    } catch (error) {
+      const apiMsg = error.response?.data?.message;
+      if (apiMsg) return { success: false, message: apiMsg };
+    }
+
+    // Local Fallback OTP Generation
+    const registeredUsers = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
+    if (registeredUsers.some(u => u.email.toLowerCase() === cleanEmail)) {
+      return { success: false, message: 'An account with this email address already exists. Please login instead.' };
+    }
+
+    const localOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    localStorage.setItem(`otp_signup_${cleanEmail}`, JSON.stringify({
+      name, email: cleanEmail, password, role, otp: localOtp, expires: Date.now() + 10 * 60 * 1000
+    }));
+
+    triggerEmailNotification(
+      cleanEmail,
+      '🔑 Signup Verification OTP Code',
+      `Hello ${name}! Your 6-digit email verification OTP for Artisan's Corner is ${localOtp}. Valid for 10 minutes.`,
+      'info'
+    );
+
+    return { success: true, message: `Verification OTP sent to ${cleanEmail}! Please enter the code.`, otp: localOtp };
+  };
+
+  const verifySignupOtp = async (email, otp) => {
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanOtp = otp.toString().trim();
+
+    try {
+      const { data } = await axios.post(`${API_URL}/auth/verify-signup-otp`, { email: cleanEmail, otp: cleanOtp });
       if (data.success) {
         setUser(data.data);
         setToken(data.data.token);
@@ -207,43 +245,44 @@ export const AuthProvider = ({ children }) => {
 
         triggerEmailNotification(
           data.data.email,
-          '🎉 Welcome to Artisan\'s Corner! Signup Successful',
-          `Congratulations ${data.data.name}! Your Artisan's Corner ${data.data.role.toUpperCase()} account was registered successfully on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}. Confirmation email sent to your mail ID.`,
+          '🎉 Welcome to Artisan\'s Corner! Registration Successful',
+          `Congratulations ${data.data.name}! Your ${data.data.role.toUpperCase()} account was created successfully.`,
           'signup'
         );
 
-        return { success: true, message: data.message };
+        return { success: true, message: data.message, data: data.data };
       }
     } catch (error) {
-      console.log('API registration offline/failed, registering user in local database');
+      const apiMsg = error.response?.data?.message;
+      if (apiMsg) return { success: false, message: apiMsg };
     }
 
-    // Permanent Save into Local Database
+    // Local Fallback Verification
+    const raw = localStorage.getItem(`otp_signup_${cleanEmail}`);
+    if (!raw) return { success: false, message: 'No pending OTP found or code has expired. Please click Resend OTP.' };
+
+    const record = JSON.parse(raw);
+    if (record.expires < Date.now()) {
+      localStorage.removeItem(`otp_signup_${cleanEmail}`);
+      return { success: false, message: 'OTP has expired! Please click Resend OTP to get a new code.' };
+    }
+
+    if (record.otp !== cleanOtp) {
+      return { success: false, message: 'Wrong OTP code! Please enter the correct 6-digit code or click Resend OTP.' };
+    }
+
     const registeredUsers = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
-    const userExists = registeredUsers.some(u => u.email.toLowerCase() === email.toLowerCase().trim());
-
-    if (userExists) {
-      return { success: false, message: 'An account with this email address already exists. Please login instead.' };
-    }
-
     const newUser = {
       _id: 'u_' + Date.now(),
-      name,
-      email: email.toLowerCase().trim(),
-      password,
-      role: role || 'buyer',
-      avatar: role === 'delivery'
-        ? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
-        : role === 'admin'
-        ? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'
-        : role === 'seller'
-        ? 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=150&q=80'
-        : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+      name: record.name,
+      email: cleanEmail,
+      password: record.password,
+      role: record.role,
       token: 'token_' + Date.now()
     };
-
     registeredUsers.push(newUser);
     localStorage.setItem('artisans_registered_users', JSON.stringify(registeredUsers));
+    localStorage.removeItem(`otp_signup_${cleanEmail}`);
 
     const sessionUser = { ...newUser };
     delete sessionUser.password;
@@ -252,9 +291,122 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('token', sessionUser.token);
     localStorage.setItem('user', JSON.stringify(sessionUser));
 
-    triggerEmailNotification(sessionUser.email, '🎉 Welcome Email Notification', `Congratulations ${sessionUser.name}! Your Artisan's Corner ${role.toUpperCase()} account was registered successfully in the database.`, 'signup');
+    triggerEmailNotification(sessionUser.email, '🎉 Welcome to Artisan\'s Corner', `Congratulations ${sessionUser.name}! Registration successful.`, 'signup');
+    return { success: true, message: `Account registered successfully as ${record.role.toUpperCase()}!` };
+  };
 
-    return { success: true, message: `Account registered successfully as ${role.toUpperCase()}!` };
+  // OTP Forgot Password Methods
+  const sendForgotPasswordOtp = async (email) => {
+    const cleanEmail = email.toLowerCase().trim();
+
+    try {
+      const { data } = await axios.post(`${API_URL}/auth/forgot-password-otp`, { email: cleanEmail });
+      if (data.success) {
+        if (data.otp) {
+          triggerEmailNotification(
+            cleanEmail,
+            '🔐 Password Reset OTP Code',
+            `Your 6-digit password reset OTP is ${data.otp}. Valid for 10 minutes.`,
+            'info'
+          );
+        }
+        return { success: true, message: data.message, otp: data.otp };
+      }
+    } catch (error) {
+      const apiMsg = error.response?.data?.message;
+      if (apiMsg) return { success: false, message: apiMsg };
+    }
+
+    // Local Fallback Forgot Password OTP
+    const registeredUsers = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
+    const userMatch = registeredUsers.find(u => u.email.toLowerCase() === cleanEmail);
+
+    if (!userMatch) {
+      return { success: false, message: 'No registered account found with this email address. Please check your email or sign up.' };
+    }
+
+    const localOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    localStorage.setItem(`otp_reset_${cleanEmail}`, JSON.stringify({
+      email: cleanEmail, otp: localOtp, expires: Date.now() + 10 * 60 * 1000
+    }));
+
+    triggerEmailNotification(
+      cleanEmail,
+      '🔐 Password Reset OTP Code',
+      `Hello ${userMatch.name}! Your 6-digit password reset OTP is ${localOtp}. Valid for 10 minutes.`,
+      'info'
+    );
+
+    return { success: true, message: `Password reset OTP sent to ${cleanEmail}! Please check your email.`, otp: localOtp };
+  };
+
+  const verifyResetOtp = async (email, otp) => {
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanOtp = otp.toString().trim();
+
+    try {
+      const { data } = await axios.post(`${API_URL}/auth/verify-reset-otp`, { email: cleanEmail, otp: cleanOtp });
+      if (data.success) {
+        return { success: true, message: data.message };
+      }
+    } catch (error) {
+      const apiMsg = error.response?.data?.message;
+      if (apiMsg) return { success: false, message: apiMsg };
+    }
+
+    const raw = localStorage.getItem(`otp_reset_${cleanEmail}`);
+    if (!raw) return { success: false, message: 'No pending reset OTP found or code has expired. Please click Resend OTP.' };
+
+    const record = JSON.parse(raw);
+    if (record.expires < Date.now()) {
+      localStorage.removeItem(`otp_reset_${cleanEmail}`);
+      return { success: false, message: 'OTP has expired! Please click Resend OTP to get a new code.' };
+    }
+
+    if (record.otp !== cleanOtp) {
+      return { success: false, message: 'Wrong OTP code! Please enter the correct 6-digit code or click Resend OTP.' };
+    }
+
+    return { success: true, message: 'OTP verified successfully! You can now enter your new password.' };
+  };
+
+  const resetPassword = async (email, otp, newPassword) => {
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanOtp = otp.toString().trim();
+
+    try {
+      const { data } = await axios.post(`${API_URL}/auth/reset-password`, { email: cleanEmail, otp: cleanOtp, newPassword });
+      if (data.success) {
+        triggerEmailNotification(
+          cleanEmail,
+          '🔒 Security Alert: Password Updated',
+          `Your Artisan's Corner account password was updated successfully. You can now login with your new password.`,
+          'info'
+        );
+        return { success: true, message: data.message };
+      }
+    } catch (error) {
+      const apiMsg = error.response?.data?.message;
+      if (apiMsg) return { success: false, message: apiMsg };
+    }
+
+    const registeredUsers = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
+    const userIndex = registeredUsers.findIndex(u => u.email.toLowerCase() === cleanEmail);
+
+    if (userIndex !== -1) {
+      registeredUsers[userIndex].password = newPassword;
+      localStorage.setItem('artisans_registered_users', JSON.stringify(registeredUsers));
+      localStorage.removeItem(`otp_reset_${cleanEmail}`);
+
+      triggerEmailNotification(cleanEmail, '🔒 Security Alert: Password Updated', `Your password was reset successfully!`, 'info');
+      return { success: true, message: 'Password updated successfully! Please login with your new password.' };
+    }
+
+    return { success: false, message: 'Failed to reset password. User not found.' };
+  };
+
+  const register = async (name, email, password, role = 'buyer', passcode = '') => {
+    return sendSignupOtp(name, email, password, role, passcode);
   };
 
   const logout = () => {
@@ -274,7 +426,22 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, token, login, register, logout, updateRoleToSeller, emailNotification, triggerEmailNotification }}>
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      token,
+      login,
+      register,
+      sendSignupOtp,
+      verifySignupOtp,
+      sendForgotPasswordOtp,
+      verifyResetOtp,
+      resetPassword,
+      logout,
+      updateRoleToSeller,
+      emailNotification,
+      triggerEmailNotification
+    }}>
       {children}
     </AuthContext.Provider>
   );

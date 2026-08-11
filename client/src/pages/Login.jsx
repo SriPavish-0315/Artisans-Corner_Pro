@@ -12,7 +12,19 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { login } = useAuth();
+  // Forgot Password Modal State
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [forgotStep, setForgotStep] = useState(1); // 1: Email, 2: OTP, 3: New Password
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [otpCode, setOtpCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [forgotError, setForgotError] = useState('');
+  const [forgotSuccess, setForgotSuccess] = useState('');
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [onScreenOtp, setOnScreenOtp] = useState('');
+
+  const { login, sendForgotPasswordOtp, verifyResetOtp, resetPassword } = useAuth();
   const navigate = useNavigate();
 
   const isAdminMode = selectedRole === 'admin' || email.toLowerCase().includes('admin');
@@ -45,14 +57,82 @@ const Login = () => {
     }
   };
 
+  // Forgot Password Handlers
+  const handleSendForgotOtp = async (e) => {
+    if (e) e.preventDefault();
+    setForgotError('');
+    setForgotSuccess('');
+    setForgotLoading(true);
+
+    const res = await sendForgotPasswordOtp(forgotEmail);
+    setForgotLoading(false);
+
+    if (res.success) {
+      setForgotSuccess(res.message);
+      if (res.otp) setOnScreenOtp(res.otp);
+      setForgotStep(2);
+    } else {
+      setForgotError(res.message);
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setForgotError('');
+    setForgotSuccess('');
+
+    if (!otpCode || otpCode.trim().length !== 6) {
+      setForgotError('Please enter the full 6-digit OTP code sent to your email.');
+      return;
+    }
+
+    setForgotLoading(true);
+    const res = await verifyResetOtp(forgotEmail, otpCode);
+    setForgotLoading(false);
+
+    if (res.success) {
+      setForgotSuccess(res.message);
+      setForgotStep(3);
+    } else {
+      setForgotError(res.message || 'Wrong OTP code! Please enter the correct code or click Resend OTP.');
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setForgotError('');
+    setForgotSuccess('');
+
+    if (newPassword.length < 6) {
+      setForgotError('Password must be at least 6 characters long.');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setForgotError('Passwords do not match! Please check your input.');
+      return;
+    }
+
+    setForgotLoading(true);
+    const res = await resetPassword(forgotEmail, otpCode, newPassword);
+    setForgotLoading(false);
+
+    if (res.success) {
+      setForgotSuccess(res.message);
+      setTimeout(() => {
+        setShowForgotModal(false);
+        setForgotStep(1);
+        setEmail(forgotEmail);
+        setPassword('');
+      }, 2500);
+    } else {
+      setForgotError(res.message);
+    }
+  };
+
   const [registeredList, setRegisteredList] = useState(() => {
     const raw = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
-    // Filter out all default demo emails so only manually registered users remain in database
-    const realUsers = raw.filter(u => u && u.email && !u.email.toLowerCase().includes('example.com') && !u.email.toLowerCase().includes('artisans.com'));
-    if (raw.length !== realUsers.length) {
-      localStorage.setItem('artisans_registered_users', JSON.stringify(realUsers));
-    }
-    return realUsers;
+    return raw.filter(u => u && u.email && !u.email.toLowerCase().includes('example.com') && !u.email.toLowerCase().includes('artisans.com'));
   });
 
   return (
@@ -83,7 +163,22 @@ const Login = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Password</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-bold text-gray-700">Password</label>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowForgotModal(true);
+                  setForgotStep(1);
+                  setForgotEmail(email);
+                  setForgotError('');
+                  setForgotSuccess('');
+                }}
+                className="text-xs font-bold text-amber-800 hover:underline"
+              >
+                Forgot Password?
+              </button>
+            </div>
             <div className="relative flex items-center">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -104,7 +199,6 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Admin Verification Code Input Field with Eye Toggle */}
           {isAdminMode && (
             <div className="bg-purple-50 p-4 rounded-2xl border border-purple-200 space-y-2 animate-fadeIn">
               <div className="flex items-center justify-between">
@@ -142,7 +236,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 bg-amber-800 text-white font-bold text-sm rounded-2xl shadow-lg hover:bg-amber-900 transition-all"
+            className="w-full py-3.5 bg-amber-800 text-white font-bold text-sm rounded-2xl shadow-lg hover:bg-amber-900 transition-all cursor-pointer"
           >
             {loading ? 'Authenticating...' : 'Sign In'}
           </button>
@@ -152,7 +246,7 @@ const Login = () => {
           Don't have an account? <Link to="/register" className="font-bold text-amber-800 hover:underline">Register here</Link>
         </p>
 
-        {/* Recommended Registered Credentials Box */}
+        {/* Registered Credentials Box */}
         <div className="pt-2 border-t border-amber-100">
           <div className="bg-amber-50/80 p-4 rounded-2xl border border-amber-200 space-y-3">
             <div className="flex items-center justify-between">
@@ -210,6 +304,154 @@ const Login = () => {
         </div>
 
       </div>
+
+      {/* FORGOT PASSWORD OTP MODAL */}
+      {showForgotModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border border-amber-100 shadow-2xl space-y-5 relative animate-fadeIn">
+            
+            <button
+              type="button"
+              onClick={() => setShowForgotModal(false)}
+              className="absolute top-5 right-5 text-gray-400 hover:text-gray-700 text-lg w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center transition-colors"
+            >
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+
+            <div className="text-center space-y-2">
+              <div className="w-12 h-12 bg-amber-100 text-amber-800 rounded-2xl flex items-center justify-center mx-auto text-xl font-bold border border-amber-200">
+                <i className="fa-solid fa-key text-amber-800"></i>
+              </div>
+              <h3 className="font-serif-title text-xl font-bold text-gray-900">Reset Your Password</h3>
+              <p className="text-xs text-gray-500">
+                {forgotStep === 1 && 'Enter your registered email ID to receive a 6-digit OTP verification code.'}
+                {forgotStep === 2 && `Enter the 6-digit OTP code sent to ${forgotEmail}.`}
+                {forgotStep === 3 && 'Create a new password for your Artisan\'s Corner account.'}
+              </p>
+            </div>
+
+            {forgotError && (
+              <div className="p-3 bg-red-50 text-red-700 rounded-xl text-xs font-bold border border-red-200">
+                {forgotError}
+              </div>
+            )}
+
+            {forgotSuccess && (
+              <div className="p-3 bg-emerald-50 text-emerald-800 rounded-xl text-xs font-bold border border-emerald-200">
+                {forgotSuccess}
+              </div>
+            )}
+
+            {/* STEP 1: VERIFY EMAIL */}
+            {forgotStep === 1 && (
+              <form onSubmit={handleSendForgotOtp} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Registered Email ID</label>
+                  <input
+                    type="email"
+                    required
+                    value={forgotEmail}
+                    onChange={(e) => setForgotEmail(e.target.value)}
+                    placeholder="name@example.com"
+                    className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={forgotLoading}
+                  className="w-full py-3.5 bg-amber-800 text-white font-bold text-sm rounded-2xl shadow-lg hover:bg-amber-900 transition-all cursor-pointer"
+                >
+                  {forgotLoading ? 'Sending OTP to Email...' : 'Send OTP Code to Email'}
+                </button>
+              </form>
+            )}
+
+            {/* STEP 2: VERIFY OTP */}
+            {forgotStep === 2 && (
+              <form onSubmit={handleVerifyOtp} className="space-y-4">
+                {onScreenOtp && (
+                  <div className="bg-amber-50 p-3 rounded-xl border border-amber-200 text-center space-y-1">
+                    <p className="text-[11px] text-amber-900 font-semibold">Your 6-Digit OTP Verification Code:</p>
+                    <p className="text-2xl font-mono font-extrabold text-amber-950 tracking-widest">{onScreenOtp}</p>
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Enter 6-Digit OTP</label>
+                  <input
+                    type="text"
+                    required
+                    maxLength={6}
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value)}
+                    placeholder="123456"
+                    className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-center font-mono text-xl tracking-widest font-extrabold focus:outline-none focus:ring-2 focus:ring-amber-800"
+                  />
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={handleSendForgotOtp}
+                    disabled={forgotLoading}
+                    className="w-1/3 py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs rounded-xl transition-all"
+                  >
+                    Resend OTP
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={forgotLoading}
+                    className="w-2/3 py-3 bg-amber-800 text-white font-bold text-xs rounded-xl shadow-md hover:bg-amber-900 transition-all cursor-pointer"
+                  >
+                    {forgotLoading ? 'Verifying OTP...' : 'Verify OTP Code'}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* STEP 3: NEW PASSWORD */}
+            {forgotStep === 3 && (
+              <form onSubmit={handleResetPassword} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">New Password</label>
+                  <input
+                    type="password"
+                    required
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Minimum 6 characters"
+                    className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Confirm New Password</label>
+                  <input
+                    type="password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Re-enter new password"
+                    className="w-full p-3 bg-amber-50/40 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-800"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={forgotLoading}
+                  className="w-full py-3.5 bg-emerald-800 text-white font-bold text-sm rounded-2xl shadow-lg hover:bg-emerald-900 transition-all cursor-pointer"
+                >
+                  {forgotLoading ? 'Updating Password...' : 'Save New Password & Login'}
+                </button>
+              </form>
+            )}
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
