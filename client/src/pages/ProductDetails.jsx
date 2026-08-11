@@ -33,7 +33,18 @@ const ProductDetails = () => {
       if (data.success && data.data) {
         setProduct(data.data);
         setSelectedImg(data.data.thumbnail || (data.data.images && data.data.images[0]));
-        if (data.data.reviews) setReviews(data.data.reviews);
+        
+        // Fetch reviews directly from MongoDB review endpoint
+        try {
+          const revRes = await axios.get(`${API_URL}/reviews/product/${id}`);
+          if (revRes.data.success && revRes.data.data) {
+            setReviews(revRes.data.data);
+          } else if (data.data.reviews) {
+            setReviews(data.data.reviews);
+          }
+        } catch (revErr) {
+          if (data.data.reviews) setReviews(data.data.reviews);
+        }
         return;
       }
     } catch (err) {

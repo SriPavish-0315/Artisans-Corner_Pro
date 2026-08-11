@@ -31,7 +31,10 @@ const createProductReview = async (req, res) => {
     const hasPurchased = await Order.findOne({
       buyer: req.user._id,
       'orderItems.product': productId,
-      isPaid: true
+      $or: [
+        { isPaid: true },
+        { orderStatus: { $in: ['Paid', 'Processing', 'Packed', 'Shipped', 'Delivered', 'Pending'] } }
+      ]
     });
 
     if (!hasPurchased) {
