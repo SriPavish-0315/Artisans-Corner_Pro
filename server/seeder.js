@@ -521,8 +521,6 @@ const seedDB = async (quiet = false) => {
     ];
 
     const createdProducts = await Product.insertMany(productsData);
-
-    const buyerId = new mongoose.Types.ObjectId();
     const seedShippingAddress = {
       street: '742 Artisan Way',
       city: 'Craft City',
