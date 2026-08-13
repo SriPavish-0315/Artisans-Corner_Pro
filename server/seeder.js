@@ -39,8 +39,12 @@ const seedDB = async (quiet = false) => {
       }
     }
 
-    // 1. Create Mock Seller ID for Seed Store & Products
+    // 1. Create IDs for Seed Store, Users & Products
     const sellerId = new mongoose.Types.ObjectId();
+    const buyerId = new mongoose.Types.ObjectId();
+    const adminId = new mongoose.Types.ObjectId();
+    const deliveryId = new mongoose.Types.ObjectId();
+    
 
     // 2. Create Store for Artisan Products
     const store = await Store.create({
@@ -54,6 +58,45 @@ const seedDB = async (quiet = false) => {
       totalRevenue: 1250.00,
       totalEarnings: 1187.50,
       platformCommissionPaid: 62.50
+    });
+
+
+      // 3. Create Seed Demo Users with bcrypt-hashed passwords (via User.create)
+    await User.create({
+      _id: buyerId,
+      name: 'Demo Buyer',
+      email: 'buyer@example.com',
+      password: 'password123',
+      role: 'buyer',
+      isEmailVerified: true
+    });
+
+    await User.create({
+      _id: sellerId,
+      name: 'Demo Seller',
+      email: 'seller@example.com',
+      password: 'password123',
+      role: 'seller',
+      store: store._id,
+      isEmailVerified: true
+    });
+
+    await User.create({
+      _id: adminId,
+      name: 'Demo Admin',
+      email: 'admin@example.com',
+      password: 'password123',
+      role: 'admin',
+      isEmailVerified: true
+    });
+
+    await User.create({
+      _id: deliveryId,
+      name: 'Sam Delivery Driver',
+      email: 'delivery@example.com',
+      password: 'password123',
+      role: 'delivery',
+      isEmailVerified: true
     });
 
     const seller = { _id: sellerId, store: store._id };
