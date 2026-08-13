@@ -9,6 +9,14 @@ const sendEmail = require('../utils/sendEmail');
 const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+    
+if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide all required fields: name, email address, and password.'
+      });
+    }  
+    
     const cleanEmail = email.toLowerCase().trim();
 
     const existingUser = await User.findOne({ email: cleanEmail });
