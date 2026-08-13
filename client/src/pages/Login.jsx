@@ -95,9 +95,23 @@ const Login = () => {
     }
   };
 
+    const defaultDemoUsers = [
+    { _id: 'seed_buyer', name: 'Demo Buyer', email: 'buyer@example.com', password: 'password123', role: 'buyer' },
+    { _id: 'seed_seller', name: 'Demo Seller', email: 'seller@example.com', password: 'password123', role: 'seller' },
+    { _id: 'seed_admin', name: 'Demo Admin', email: 'admin@example.com', password: 'password123', role: 'admin' },
+    { _id: 'seed_delivery', name: 'Sam Delivery Driver', email: 'delivery@example.com', password: 'password123', role: 'delivery' }
+  ];  
+
   const [registeredList, setRegisteredList] = useState(() => {
     const raw = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
-    return raw.filter(u => u && u.email && !u.email.toLowerCase().includes('example.com') && !u.email.toLowerCase().includes('artisans.com'));
+    const cleanList = raw.filter(u => u && u.email);
+    const combined = [...cleanList];
+    defaultDemoUsers.forEach(demo => {
+      if (!combined.some(u => u.email?.toLowerCase().trim() === demo.email.toLowerCase().trim())) {
+        combined.push(demo);
+      }
+    });
+    return combined;
   });
 
   return (
