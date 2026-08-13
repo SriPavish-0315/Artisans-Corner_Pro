@@ -9,6 +9,13 @@ const sendEmail = require('../utils/sendEmail');
 const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide all required fields: name, email address, and password.'
+      });
+    }
+
     const cleanEmail = email.toLowerCase().trim();
 
     const existingUser = await User.findOne({ email: cleanEmail });
@@ -21,7 +28,7 @@ const registerUser = async (req, res) => {
     }
 
     const user = await User.create({
-      name,
+      name: name.trim(),
       email: cleanEmail,
       password,
       role: role && ['buyer', 'seller', 'admin', 'delivery'].includes(role) ? role : 'buyer',
@@ -40,6 +47,7 @@ const registerUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        avatar: user.avatar,
         token: generateToken(user._id)
       }
     });
@@ -79,39 +87,62 @@ const resendEmailOTP = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please enter both email address and password.'
+      });
+    }
+
     const cleanEmail = email.toLowerCase().trim();
 
     const user = await User.findOne({ email: cleanEmail }).populate('store');
 
-    if (user && (await user.matchPassword(password))) {
-      const subject = '🔐 Account Login Security Notification';
-      const message = `Hello ${user.name}! You successfully logged in to your Artisan's Corner ${user.role.toUpperCase()} account on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}. If this was not you, please reset your password.`;
-
-      sendEmail({ email: user.email, subject, message }).catch(err => console.error('Email error:', err.message));
-
-      return res.json({
-        success: true,
-        message: `Login successful! Welcome back, ${user.name}.`,
-        data: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          store: user.store,
-          avatar: user.avatar,
-          token: generateToken(user._id)
-        }
-      });
-    } else {
-      res.status(401).json({
+    if (!user) {
+      return res.status(401).json({
         success: false,
         message: 'Invalid email or password'
       });
     }
+
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid email or password'
+      });
+    }
+
+    if (!user.isActive) {
+      return res.status(403).json({
+        success: false,
+        message: 'Your account has been deactivated. Please contact support.'
+      });
+    }
+
+    const subject = '🔐 Account Login Security Notification';
+    const message = `Hello ${user.name}! You successfully logged in to your Artisan's Corner ${user.role.toUpperCase()} account on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}. If this was not you, please reset your password.`;
+
+    sendEmail({ email: user.email, subject, message }).catch(err => console.error('Email error:', err.message));
+
+    return res.json({
+      success: true,
+      message: `Login successful! Welcome back, ${user.name}.`,
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        store: user.store,
+        avatar: user.avatar,
+        token: generateToken(user._id)
+      }
+    });
   } catch (error) {
+    console.error('Login Error:', error);
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message || 'Server error during login.'
     });
   }
 };

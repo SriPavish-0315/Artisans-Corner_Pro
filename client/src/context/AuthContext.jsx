@@ -101,6 +101,30 @@ export const AuthProvider = ({ children }) => {
     }, 15000);
   };
 
+  const syncRegisteredUser = (userData, plainPassword) => {
+    try {
+      const registered = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
+      const cleanEmail = userData.email.toLowerCase().trim();
+      const existingIdx = registered.findIndex(u => u && u.email?.toLowerCase().trim() === cleanEmail);
+      const userItem = {
+        _id: userData._id || 'u_' + Date.now(),
+        name: userData.name,
+        email: cleanEmail,
+        password: plainPassword,
+        role: userData.role || 'buyer',
+        token: userData.token || 'reg-token'
+      };
+      if (existingIdx !== -1) {
+        registered[existingIdx] = { ...registered[existingIdx], ...userItem };
+      } else {
+        registered.push(userItem);
+      }
+      localStorage.setItem('artisans_registered_users', JSON.stringify(registered));
+    } catch (e) {
+      console.error('Local sync notice:', e);
+    }
+  };
+
   const login = async (email, password, adminPasscode = '') => {
     const cleanEmail = email.toLowerCase().trim();
     const isAdminTarget = cleanEmail === 'admin@example.com' || cleanEmail.includes('admin');
@@ -120,6 +144,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', data.data.token);
         localStorage.setItem('user', JSON.stringify(data.data));
 
+        syncRegisteredUser(data.data, password);
+
         return { success: true, message: data.message };
       }
     } catch (error) {
@@ -127,10 +153,10 @@ export const AuthProvider = ({ children }) => {
       if (apiMsg) return { success: false, message: apiMsg };
     }
 
-    // Database Lookup for Registered Users
+    // Database Lookup for Registered Users (Local Fallback)
     const registeredUsers = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
     const matchedUser = registeredUsers.find(
-      u => u.email.toLowerCase() === cleanEmail && u.password === password
+      u => u && u.email?.toLowerCase().trim() === cleanEmail && u.password === password
     );
 
     if (matchedUser) {
@@ -175,6 +201,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', data.data.token);
         localStorage.setItem('user', JSON.stringify(data.data));
 
+        syncRegisteredUser(data.data, password);
+
         return {
           success: true,
           message: data.message,
@@ -188,7 +216,7 @@ export const AuthProvider = ({ children }) => {
 
     // Local Fallback Registration
     const registeredUsers = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
-    if (registeredUsers.some(u => u.email.toLowerCase() === cleanEmail)) {
+    if (registeredUsers.some(u => u && u.email?.toLowerCase().trim() === cleanEmail)) {
       return { success: false, message: 'An account with this email address already exists. Please login instead.' };
     }
 

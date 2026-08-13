@@ -11,8 +11,8 @@ const addressSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true, index: true },
+  name: { type: String, required: true, trim: true },
+  email: { type: String, required: true, unique: true, index: true, lowercase: true, trim: true },
   password: { type: String, required: true },
   role: { 
     type: String, 
@@ -40,6 +40,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.matchPassword = async function(enteredPassword) {
+  if (!enteredPassword || !this.password) return false;
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
