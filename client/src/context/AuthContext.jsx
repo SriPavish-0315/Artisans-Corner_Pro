@@ -101,6 +101,34 @@ export const AuthProvider = ({ children }) => {
     }, 15000);
   };
 
+  const syncRegisteredUser = (userData, plainPassword) => {
+    try {
+      const registered = JSON.parse(localStorage.getItem('artisans_registered_users') || '[]');
+      const cleanEmail = userData.email.toLowerCase().trim();
+      const existingIdx = registered.findIndex(u => u && u.email?.toLowerCase().trim() === cleanEmail);
+      const userItem = {
+        _id: userData._id || 'u_' + Date.now(),
+        name: userData.name,
+        email: cleanEmail,
+        password: plainPassword,
+        role: userData.role || 'buyer',
+        token: userData.token || 'reg-token'
+      };
+      if (existingIdx !== -1) {
+        registered[existingIdx] = { ...registered[existingIdx], ...userItem };
+      } else {
+        registered.push(userItem);
+      }
+      localStorage.setItem('artisans_registered_users', JSON.stringify(registered));
+    } catch (e) {
+      console.error('Local sync notice:', e);
+    }
+  };
+
+
+
+  
+
   const login = async (email, password, adminPasscode = '') => {
     const cleanEmail = email.toLowerCase().trim();
     const isAdminTarget = cleanEmail === 'admin@example.com' || cleanEmail.includes('admin');
