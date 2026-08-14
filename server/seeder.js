@@ -1,3 +1,4 @@
+const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const User = require('./models/User');
@@ -6,7 +7,7 @@ const Product = require('./models/Product');
 const Order = require('./models/Order');
 const Review = require('./models/Review');
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/artisans_corner';
 
