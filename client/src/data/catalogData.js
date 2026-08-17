@@ -2193,7 +2193,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1579783901586-d8827248356f?auto=format&fit=crop&w=600&q=80&sig=174"
+    "thumbnail": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "wsb03",
@@ -3226,7 +3226,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Terra Cotta Studios"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80&sig=260"
+    "thumbnail": "https://images.unsplash.com/photo-1614088685112-0a760b71a3c8?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "go09",
