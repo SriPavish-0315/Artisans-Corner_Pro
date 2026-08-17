@@ -1169,7 +1169,7 @@ export const MOCK_CATALOG = [
     "price": 18,
     "averageRating": 4.8,
     "totalReviews": 50,
-    "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80&sig=89",
+    "thumbnail": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Wood & Wave Artisans"
     }
@@ -1181,7 +1181,7 @@ export const MOCK_CATALOG = [
     "price": 45,
     "averageRating": 5,
     "totalReviews": 42,
-    "thumbnail": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80&sig=90",
+    "thumbnail": "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Wood & Wave Artisans"
     }
@@ -1193,7 +1193,7 @@ export const MOCK_CATALOG = [
     "price": 29,
     "averageRating": 4.9,
     "totalReviews": 31,
-    "thumbnail": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80&sig=91",
+    "thumbnail": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Clay & Flame"
     }
@@ -1205,7 +1205,7 @@ export const MOCK_CATALOG = [
     "price": 65,
     "averageRating": 4.8,
     "totalReviews": 19,
-    "thumbnail": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80&sig=92",
+    "thumbnail": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Terra Cotta Studios"
     }
@@ -1217,7 +1217,7 @@ export const MOCK_CATALOG = [
     "price": 54,
     "averageRating": 4.9,
     "totalReviews": 38,
-    "thumbnail": "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&w=600&q=80&sig=93",
+    "thumbnail": "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Wood & Wave Artisans"
     }
@@ -1229,7 +1229,7 @@ export const MOCK_CATALOG = [
     "price": 36,
     "averageRating": 4.8,
     "totalReviews": 24,
-    "thumbnail": "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80&sig=94",
+    "thumbnail": "https://images.unsplash.com/photo-1514986888952-8cd320577b68?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Clay & Flame"
     }
@@ -1241,7 +1241,7 @@ export const MOCK_CATALOG = [
     "price": 20,
     "averageRating": 4.7,
     "totalReviews": 29,
-    "thumbnail": "https://images.unsplash.com/photo-1533158307587-828f0a76ef46?auto=format&fit=crop&w=600&q=80&sig=95",
+    "thumbnail": "https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Wood & Wave Artisans"
     }
@@ -1253,7 +1253,7 @@ export const MOCK_CATALOG = [
     "price": 42,
     "averageRating": 4.9,
     "totalReviews": 18,
-    "thumbnail": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80&sig=96",
+    "thumbnail": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=600&q=80",
     "store": {
       "storeName": "Terra Cotta Studios"
     }
@@ -1593,7 +1593,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Forest Craft Co."
     },
-    "thumbnail": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=600&q=80&sig=124"
+    "thumbnail": "https://images.unsplash.com/photo-1590779033100-9f60a05a013d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "hbb03",
@@ -1605,7 +1605,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Forest Craft Co."
     },
-    "thumbnail": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80&sig=125"
+    "thumbnail": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "hbb04",
@@ -1653,7 +1653,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Forest Craft Co."
     },
-    "thumbnail": "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=600&q=80&sig=129"
+    "thumbnail": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "hbb08",
@@ -2181,7 +2181,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1549887534-1541e9326642?auto=format&fit=crop&w=600&q=80&sig=173"
+    "thumbnail": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "wsb02",
@@ -2217,7 +2217,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=600&q=80&sig=176"
+    "thumbnail": "https://images.unsplash.com/photo-1532336414038-cf19250c5757?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "wsb05",
@@ -2241,7 +2241,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=600&q=80&sig=178"
+    "thumbnail": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "wsb07",
@@ -2253,7 +2253,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=600&q=80&sig=179"
+    "thumbnail": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "wsb08",
@@ -2277,7 +2277,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=600&q=80&sig=181"
+    "thumbnail": "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "wsb10",
@@ -2301,7 +2301,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80&sig=183"
+    "thumbnail": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "hst02",
@@ -2325,7 +2325,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80&sig=185"
+    "thumbnail": "https://images.unsplash.com/photo-1519947486511-46149fa0a254?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "hst04",
@@ -2349,7 +2349,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80&sig=187"
+    "thumbnail": "https://images.unsplash.com/photo-1580481072645-022f9a6d1270?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "hst06",
@@ -2397,7 +2397,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80&sig=191"
+    "thumbnail": "https://images.unsplash.com/photo-1546554137-f86b9593a222?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "hst10",
@@ -3190,7 +3190,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80&sig=257"
+    "thumbnail": "https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "kd10",
@@ -3202,7 +3202,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Clay & Flame"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80&sig=258"
+    "thumbnail": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "kd11",
@@ -3214,7 +3214,7 @@ export const MOCK_CATALOG = [
     "store": {
       "storeName": "Wood & Wave Artisans"
     },
-    "thumbnail": "https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=600&q=80&sig=259"
+    "thumbnail": "https://images.unsplash.com/photo-1585336261026-8f5786372960?auto=format&fit=crop&w=600&q=80"
   },
   {
     "_id": "kd12",
