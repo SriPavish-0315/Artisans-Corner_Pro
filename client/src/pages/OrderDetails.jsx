@@ -18,42 +18,58 @@ const OrderDetails = () => {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
       const { data } = await axios.get(`${API_URL}/orders/${id}`, config);
-      if (data.success) {
+      if (data.success && data.data) {
         setOrder(data.data);
+        return;
       }
     } catch (err) {
-      // Demo Fallback order
-      setOrder({
-        _id: id || 'ord_demo_8932',
-        createdAt: new Date().toISOString(),
-        orderStatus: 'Processing',
-        isPaid: true,
-        paidAt: new Date().toISOString(),
-        shippingAddress: {
-          street: '124 Artisan Way',
-          city: 'San Francisco',
-          state: 'CA',
-          postalCode: '94107',
-          country: 'United States'
-        },
-        orderItems: [
-          {
-            _id: 'i1',
-            name: 'Hand-thrown Speckled Ceramic Coffee Mug',
-            quantity: 2,
-            price: 38,
-            image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80',
-            store: { storeName: 'Terra Cotta Studios' }
-          }
-        ],
-        itemsPrice: 76,
-        platformFee: 3.80,
-        sellerEarnings: 72.20,
-        shippingPrice: 10,
-        taxPrice: 6.08,
-        totalPrice: 92.08
-      });
+      console.warn('Backend fetch failed, checking localStorage for saved order...');
     }
+
+    // Check localStorage for recently placed order
+    try {
+      const savedOrders = JSON.parse(localStorage.getItem('artisans_user_orders') || '[]');
+      const localMatch = savedOrders.find(o => o._id === id) || JSON.parse(localStorage.getItem(`order_${id}`) || 'null');
+
+      if (localMatch) {
+        setOrder(localMatch);
+        return;
+      }
+    } catch (e) {
+      console.error('Error reading localStorage order:', e);
+    }
+
+    // Demo Fallback order if not found
+    setOrder({
+      _id: id || 'ord_demo_8932',
+      createdAt: new Date().toISOString(),
+      orderStatus: 'Processing',
+      isPaid: true,
+      paidAt: new Date().toISOString(),
+      shippingAddress: {
+        street: '124 Artisan Way',
+        city: 'San Francisco',
+        state: 'CA',
+        postalCode: '94107',
+        country: 'United States'
+      },
+      orderItems: [
+        {
+          _id: 'i1',
+          name: 'Hand-thrown Speckled Ceramic Coffee Mug',
+          quantity: 2,
+          price: 38,
+          image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80',
+          store: { storeName: 'Terra Cotta Studios' }
+        }
+      ],
+      itemsPrice: 76,
+      platformFee: 3.80,
+      sellerEarnings: 72.20,
+      shippingPrice: 10,
+      taxPrice: 6.08,
+      totalPrice: 92.08
+    });
   };
 
   if (!order) return <div className="text-center py-20 font-bold text-gray-600">Loading Order Details...</div>;
