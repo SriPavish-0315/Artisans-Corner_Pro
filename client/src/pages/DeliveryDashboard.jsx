@@ -22,51 +22,16 @@ const DeliveryDashboard = () => {
 
   const loadDeliveries = () => {
     const saved = localStorage.getItem('artisans_assigned_deliveries');
-    let list = saved ? JSON.parse(saved) : [
-      {
-        id: 'DEL-8921',
-        orderId: 'ORD-8921',
-        buyerName: 'Customer',
-        buyerEmail: '',
-        buyerPhone: '+1 (555) 234-5678',
-        deliveryAddress: '742 Evergreen Terrace, Springfield, IL 62704',
-        productName: 'Wild Lavender Soy Candles Trio',
-        driverName: user?.name || 'Assigned Driver',
-        driverEmail: user?.email || '',
-        expectedTime: 'Today by 4:30 PM',
-        status: 'Out for Delivery',
-        assignedAt: '2026-08-10 14:00',
-        deliveredAt: '',
-        deliveryPlace: '',
-        deliveryNotes: ''
-      },
-      {
-        id: 'DEL-7714',
-        orderId: 'ORD-7714',
-        buyerName: 'Customer',
-        buyerEmail: '',
-        buyerPhone: '+1 (555) 987-6543',
-        deliveryAddress: '1725 Slough Avenue, Scranton, PA 18503',
-        productName: 'Hand-thrown Speckled Ceramic Mug',
-        driverName: user?.name || 'Assigned Driver',
-        driverEmail: user?.email || '',
-        expectedTime: 'Today by 6:00 PM',
-        status: 'Assigned',
-        assignedAt: '2026-08-10 15:30',
-        deliveredAt: '',
-        deliveryPlace: '',
-        deliveryNotes: ''
-      }
-    ];
+    const list = saved ? JSON.parse(saved) : [];
 
-    // Filter deliveries assigned to current logged-in driver or fallback to all for demo
+    // Filter deliveries assigned specifically to current logged-in delivery driver email
     if (user?.email) {
       const myDeliveries = list.filter(
-        d => d.driverEmail.toLowerCase() === user.email.toLowerCase() || user.role === 'delivery'
+        d => d.driverEmail && d.driverEmail.toLowerCase() === user.email.toLowerCase()
       );
-      setDeliveries(myDeliveries.length > 0 ? myDeliveries : list);
+      setDeliveries(myDeliveries);
     } else {
-      setDeliveries(list);
+      setDeliveries([]);
     }
   };
 
@@ -238,9 +203,11 @@ const DeliveryDashboard = () => {
       <div className="space-y-4">
         {filteredDeliveries.length === 0 ? (
           <div className="bg-white rounded-3xl p-12 text-center border border-gray-100 space-y-3">
-            <i className="fa-solid fa-truck-ramp-box text-4xl text-gray-300"></i>
-            <h3 className="text-lg font-bold text-gray-800">No deliveries found in this list</h3>
-            <p className="text-xs text-gray-500">New assignments from the Admin will appear here automatically.</p>
+            <i className="fa-solid fa-truck-ramp-box text-4xl text-blue-300"></i>
+            <h3 className="text-lg font-bold text-gray-800">No Assigned Deliveries Yet</h3>
+            <p className="text-xs text-gray-500 max-w-md mx-auto">
+              You currently have 0 active packages. Delivery packages will only appear here when the Admin assigns an order near your delivery location.
+            </p>
           </div>
         ) : (
           filteredDeliveries.map((item) => (

@@ -1222,13 +1222,13 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Delivery Address *</label>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Delivery Address & Nearby Location / Landmark *</label>
                 <input
                   type="text"
                   required
                   value={deliveryForm.deliveryAddress}
                   onChange={(e) => setDeliveryForm({ ...deliveryForm, deliveryAddress: e.target.value })}
-                  placeholder="Street Address, City, Zip Code"
+                  placeholder="e.g. 742 Evergreen Terrace, Springfield, IL (Near City Center)"
                   className="w-full p-3 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold"
                 />
               </div>
@@ -1238,15 +1238,21 @@ const AdminDashboard = () => {
                 <select
                   value={deliveryForm.driverEmail}
                   onChange={(e) => {
-                    const selUser = usersList.find(u => u.email === e.target.value);
+                    const selUser = usersList.find(u => u.email?.toLowerCase().trim() === e.target.value?.toLowerCase().trim());
                     setDeliveryForm({
                       ...deliveryForm,
                       driverEmail: e.target.value,
-                      driverName: selUser ? selUser.name : 'Sam Delivery Driver'
+                      driverName: selUser ? selUser.name : (e.target.value.split('@')[0] || 'Delivery Driver')
                     });
                   }}
                   className="w-full p-3 bg-blue-50/60 border border-blue-300 rounded-xl text-xs font-bold text-blue-950 focus:outline-none"
                 >
+                  <option value="">-- Select Registered Delivery Driver --</option>
+                  {usersList.filter(u => u.role === 'delivery').map(u => (
+                    <option key={u.email} value={u.email}>
+                      {u.name} ({u.email})
+                    </option>
+                  ))}
                   <option value="delivery@example.com">Sam Delivery Driver (delivery@example.com)</option>
                   <option value="david.delivery@example.com">David Delivery (david.delivery@example.com)</option>
                   <option value="alex.delivery@example.com">Alex Delivery Partner (alex.delivery@example.com)</option>
