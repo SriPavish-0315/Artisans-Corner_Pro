@@ -127,6 +127,51 @@ const StandardStripeCheckoutForm = ({ clientSecret, address, setAddress, handleI
       localStorage.setItem('artisans_user_orders', JSON.stringify(savedOrders));
       localStorage.setItem(`order_${finalOrderId}`, JSON.stringify(newOrderObj));
 
+      // Auto-decrease product stock for Admin Dashboard and live product pages
+      try {
+        const currentStocks = JSON.parse(localStorage.getItem('artisans_product_stocks') || '{}');
+        cartItems.forEach(item => {
+          const currentVal = currentStocks[item._id] !== undefined ? currentStocks[item._id] : (item.stock !== undefined ? item.stock : 15);
+          currentStocks[item._id] = Math.max(0, currentVal - item.quantity);
+        });
+        localStorage.setItem('artisans_product_stocks', JSON.stringify(currentStocks));
+
+        const savedAdminProducts = JSON.parse(localStorage.getItem('artisans_admin_products') || '[]');
+        if (savedAdminProducts.length > 0) {
+          const updatedAdminProducts = savedAdminProducts.map(prod => {
+            const purchased = cartItems.find(ci => ci._id === prod._id);
+            if (purchased) {
+              return { ...prod, stock: Math.max(0, (prod.stock || 0) - purchased.quantity) };
+            }
+            return prod;
+          });
+          localStorage.setItem('artisans_admin_products', JSON.stringify(updatedAdminProducts));
+        }
+
+        const globalOrders = JSON.parse(localStorage.getItem('artisans_global_orders') || '[]');
+        const adminOrderRecord = {
+          _id: finalOrderId,
+          buyerName: user?.name || 'Customer',
+          buyerEmail: user?.email || 'customer@example.com',
+          buyerPhone: user?.phone || '+1 (555) 349-8201',
+          totalAmount: grandTotal,
+          paymentStatus: 'Paid',
+          paymentMethod: 'Stripe Credit Card (256-bit SSL)',
+          transactionId: paymentIntent.id,
+          orderStatus: 'Processing',
+          itemsCount: cartItems.reduce((acc, item) => acc + item.quantity, 0),
+          shippingAddress: address,
+          createdAt: new Date().toISOString().replace('T', ' ').substring(0, 16)
+        };
+        globalOrders.unshift(adminOrderRecord);
+        localStorage.setItem('artisans_global_orders', JSON.stringify(globalOrders));
+
+        window.dispatchEvent(new Event('artisans_stock_updated'));
+        window.dispatchEvent(new Event('storage'));
+      } catch (syncErr) {
+        console.error('Stock sync error:', syncErr);
+      }
+
       clearCart();
 
       if (triggerEmailNotification && user?.email) {
@@ -397,6 +442,51 @@ const SmartDemoCheckoutForm = ({ address, setAddress, handleInputChange }) => {
       savedOrders.unshift(newOrderObj);
       localStorage.setItem('artisans_user_orders', JSON.stringify(savedOrders));
       localStorage.setItem(`order_${finalOrderId}`, JSON.stringify(newOrderObj));
+
+      // Auto-decrease product stock for Admin Dashboard and live product pages
+      try {
+        const currentStocks = JSON.parse(localStorage.getItem('artisans_product_stocks') || '{}');
+        cartItems.forEach(item => {
+          const currentVal = currentStocks[item._id] !== undefined ? currentStocks[item._id] : (item.stock !== undefined ? item.stock : 15);
+          currentStocks[item._id] = Math.max(0, currentVal - item.quantity);
+        });
+        localStorage.setItem('artisans_product_stocks', JSON.stringify(currentStocks));
+
+        const savedAdminProducts = JSON.parse(localStorage.getItem('artisans_admin_products') || '[]');
+        if (savedAdminProducts.length > 0) {
+          const updatedAdminProducts = savedAdminProducts.map(prod => {
+            const purchased = cartItems.find(ci => ci._id === prod._id);
+            if (purchased) {
+              return { ...prod, stock: Math.max(0, (prod.stock || 0) - purchased.quantity) };
+            }
+            return prod;
+          });
+          localStorage.setItem('artisans_admin_products', JSON.stringify(updatedAdminProducts));
+        }
+
+        const globalOrders = JSON.parse(localStorage.getItem('artisans_global_orders') || '[]');
+        const adminOrderRecord = {
+          _id: finalOrderId,
+          buyerName: user?.name || 'Customer',
+          buyerEmail: user?.email || 'customer@example.com',
+          buyerPhone: user?.phone || '+1 (555) 349-8201',
+          totalAmount: grandTotal,
+          paymentStatus: 'Paid',
+          paymentMethod: 'Stripe Credit Card (256-bit SSL)',
+          transactionId: generatedTxId,
+          orderStatus: 'Processing',
+          itemsCount: cartItems.reduce((acc, item) => acc + item.quantity, 0),
+          shippingAddress: address,
+          createdAt: new Date().toISOString().replace('T', ' ').substring(0, 16)
+        };
+        globalOrders.unshift(adminOrderRecord);
+        localStorage.setItem('artisans_global_orders', JSON.stringify(globalOrders));
+
+        window.dispatchEvent(new Event('artisans_stock_updated'));
+        window.dispatchEvent(new Event('storage'));
+      } catch (syncErr) {
+        console.error('Stock sync error:', syncErr);
+      }
 
       clearCart();
 

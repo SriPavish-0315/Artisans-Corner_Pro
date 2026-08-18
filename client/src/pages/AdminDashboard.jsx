@@ -34,12 +34,55 @@ const AdminDashboard = () => {
 
   // Product & Stock Management State
   const [productsList, setProductsList] = useState(() => {
+    const savedAdminProducts = localStorage.getItem('artisans_admin_products');
+    if (savedAdminProducts) {
+      try { return JSON.parse(savedAdminProducts); } catch (e) {}
+    }
+    const localStocks = JSON.parse(localStorage.getItem('artisans_product_stocks') || '{}');
     return MOCK_CATALOG.map((p, idx) => ({
       ...p,
-      stock: p.stock !== undefined ? p.stock : (idx % 7 === 0 ? 0 : idx % 4 === 0 ? 3 : 15 + (idx % 10)),
+      stock: localStocks[p._id] !== undefined ? localStocks[p._id] : (p.stock !== undefined ? p.stock : (idx % 7 === 0 ? 0 : idx % 4 === 0 ? 3 : 15 + (idx % 10))),
       sku: p.sku || `${(p.category || 'ART').substring(0,3).toUpperCase()}-${p._id.toUpperCase()}`
     }));
   });
+
+  // Real-time listener for customer purchase stock reductions & new orders
+  useEffect(() => {
+    const syncAdminState = () => {
+      const savedAdminProds = localStorage.getItem('artisans_admin_products');
+      const localStocks = JSON.parse(localStorage.getItem('artisans_product_stocks') || '{}');
+
+      if (savedAdminProds) {
+        try {
+          const parsedProds = JSON.parse(savedAdminProds);
+          const merged = parsedProds.map(p => ({
+            ...p,
+            stock: localStocks[p._id] !== undefined ? localStocks[p._id] : p.stock
+          }));
+          setProductsList(merged);
+        } catch (e) {}
+      } else {
+        setProductsList(prev =>
+          prev.map(p => ({
+            ...p,
+            stock: localStocks[p._id] !== undefined ? localStocks[p._id] : p.stock
+          }))
+        );
+      }
+
+      const savedGlobalOrders = localStorage.getItem('artisans_global_orders');
+      if (savedGlobalOrders) {
+        try { setOrdersList(JSON.parse(savedGlobalOrders)); } catch (e) {}
+      }
+    };
+
+    window.addEventListener('artisans_stock_updated', syncAdminState);
+    window.addEventListener('storage', syncAdminState);
+    return () => {
+      window.removeEventListener('artisans_stock_updated', syncAdminState);
+      window.removeEventListener('storage', syncAdminState);
+    };
+  }, []);
 
   // Door Delivery Assignment State
   const [assignedDeliveries, setAssignedDeliveries] = useState(() => {
@@ -198,6 +241,14 @@ const AdminDashboard = () => {
       return p;
     });
     setProductsList(updated);
+    localStorage.setItem('artisans_admin_products', JSON.stringify(updated));
+
+    const localStocks = JSON.parse(localStorage.getItem('artisans_product_stocks') || '{}');
+    const target = updated.find(p => p._id === id);
+    if (target) {
+      localStocks[id] = target.stock;
+      localStorage.setItem('artisans_product_stocks', JSON.stringify(localStocks));
+    }
 
     const catItem = MOCK_CATALOG.find(p => p._id === id);
     if (catItem) catItem.stock = Math.max(0, (catItem.stock || 0) + delta);

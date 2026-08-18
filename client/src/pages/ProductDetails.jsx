@@ -89,13 +89,16 @@ const ProductDetails = () => {
 
     const found = MOCK_CATALOG.find(p => String(p._id) === String(id) || String(p.id) === String(id)) || MOCK_CATALOG[0];
 
+    const localStocks = JSON.parse(localStorage.getItem('artisans_product_stocks') || '{}');
+    const liveStock = localStocks[found._id] !== undefined ? localStocks[found._id] : (found.stock !== undefined ? found.stock : 12);
+
     const mockItem = {
       _id: found._id || id,
       name: found.name,
       category: found.category || 'Artisan Craft',
       sku: found.sku || `${(found.category || 'ART').substring(0,3).toUpperCase()}-${(found._id || '001').toUpperCase()}`,
       price: found.price || 30,
-      stock: found.stock || 12,
+      stock: liveStock,
       description: found.description || `Meticulously crafted with passion and dedication. Using high-quality sustainable materials and traditional techniques, this ${found.name.toLowerCase()} brings style, beauty, and authenticity to your space.`,
       averageRating: found.averageRating || 4.8,
       totalReviews: found.totalReviews || 15,
